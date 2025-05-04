@@ -7,9 +7,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allPostsAndPages = await sanityFetch({
     query: sitemapData,
   });
+const headersList = await headers();
+const domain = headersList.get("host") || "localhost";
 
-  const headersList = headers();
-  const domain = headersList.get("host") || "localhost";
 
   const sitemap: MetadataRoute.Sitemap = [
     {
