@@ -1,17 +1,12 @@
-import type { NextConfig } from "next";
-import withBundleAnalyzer from "@next/bundle-analyzer";
+import type { NextConfig } from 'next'
 
-// Enable analyzer only when ANALYZE=true
-const withAnalyzer = withBundleAnalyzer({
-  enabled: process.env.ANALYZE === "true",
-});
-
-// Define your config
 const nextConfig: NextConfig = {
   env: {
-    SC_DISABLE_SPEEDY: "false",
+    SC_DISABLE_SPEEDY: 'false',
   },
-};
+  experimental: {
+    serverActions: true,
+  },
+}
 
-// Export combined config
-export default withAnalyzer(nextConfig);
+export default nextConfig
