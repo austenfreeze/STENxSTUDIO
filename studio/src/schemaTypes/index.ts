@@ -6,6 +6,10 @@ import {infoSection} from './objects/infoSection'
 import {settings} from './singletons/settings'
 import {link} from './objects/link'
 import {blockContent} from './objects/blockContent'
+import {integrations} from './documents/integrations'
+import {sanityIntegration} from './documents/sanityIntegration'
+import {vercelIntegration} from './documents/vercelIntegration'
+import {githubIntegration} from './documents/githubIntegration'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
@@ -21,4 +25,8 @@ export const schemaTypes = [
   infoSection,
   callToAction,
   link,
+  integrations,
+sanityIntegration,
+vercelIntegration,
+githubIntegration
 ]

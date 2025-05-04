@@ -1,14 +1,22 @@
-import { defineEnableDraftMode } from "next-sanity/draft-mode";
+// /app/api/draft-mode/enable/route.ts (App Router style)
 
-import { client } from "@/sanity/lib/client";
-import { token } from "@/sanity/lib/token";
+import { defineEnableDraftMode } from "next-sanity/draft-mode"
+import { client } from "@/sanity/lib/client"
+import { token } from "@/sanity/lib/token"
+import { NextRequest } from "next/server"
 
-/**
- * defineEnableDraftMode() is used to enable draft mode. Set the route of this file
- * as the previewMode.enable option for presentationTool in your sanity.config.ts
- * Learn more: https://github.com/sanity-io/next-sanity?tab=readme-ov-file#5-integrating-with-sanity-presentation-tool--visual-editing
- */
+export const GET = defineEnableDraftMode(async (req: NextRequest) => {
+  const { searchParams } = new URL(req.url)
+  const secret = searchParams.get("secret")
 
-export const { GET } = defineEnableDraftMode({
-  client: client.withConfig({ token }),
-});
+  if (secret !== process.env.NEXT_PUBLIC_SANITY_PREVIEW_SECRET) {
+    return new Response(JSON.stringify({ message: "Invalid token" }), {
+      status: 401,
+      headers: { "Content-Type": "application/json" },
+    })
+  }
+
+  return {
+    client: client.withConfig({ token }),
+  }
+})

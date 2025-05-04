@@ -1,8 +1,3 @@
-/**
- * This config is used to configure your Sanity Studio.
- * Learn more: https://www.sanity.io/docs/configuration
- */
-
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
@@ -29,6 +24,7 @@ const homeLocation = {
   title: 'Home',
   href: '/',
 } satisfies DocumentLocation
+const STUDIO_HOSTNAME = process.env.SANITY_STUDIO_STUDIO_HOST || 'http://localhost:3000'
 
 // resolveHref() is a convenience function that resolves the URL
 // path for different document types and used in the presentation tool.
@@ -46,8 +42,8 @@ function resolveHref(documentType?: string, slug?: string): string | undefined {
 
 // Main Sanity configuration
 export default defineConfig({
-  name: 'default',
-  title: 'Clean Next.js + Sanity',
+  name: 'stenxstudio',
+  title: 'STENxSTUDIO',
 
   projectId,
   dataset,

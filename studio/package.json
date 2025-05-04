@@ -29,7 +29,7 @@
     "rxjs": "^7.8.1",
     "sanity": "^3.77.0",
     "sanity-plugin-asset-source-unsplash": "^3.0.1",
-    "styled-components": "^6.1.13"
+    "styled-components": "^6.1.15"
   },
   "devDependencies": {
     "@sanity/eslint-config-studio": "^4.0.0",
