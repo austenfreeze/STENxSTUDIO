@@ -45,22 +45,47 @@ export const integrations = defineType({
       validation: Rule => Rule.required().uri({scheme: ['https']}),
     }),
     defineField({
+      name: 'studioDomain',
+      title: 'Studio Domain',
+      type: 'url',
+      description: 'Personal domain for the deployed Sanity Studio',
+      fieldset: 'overview',
+      validation: Rule => Rule.required().uri({scheme: ['https']}),
+    }),
+    defineField({
       name: 'projectLead',
       title: 'Project Lead or Maintainer',
       type: 'string',
       fieldset: 'overview',
     }),
     defineField({
-      name: 'internalNotes',
-      title: 'Internal Notes',
+      name: 'projectOutline',
+      title: 'Project Outline',
       type: 'blockContent',
       fieldset: 'overview',
     }),
 
+    defineField({
+      name: 'projectGoals',
+      title: 'Project Goals',
+      type: 'array',
+         of: [{type: 'goal', }],
+      fieldset: 'overview',
+    }),
+
+    defineField({
+      name: 'completedTask',
+      title: 'Completed Tasks',
+      type: 'array',
+         of: [{type: 'completedTask', }],
+      fieldset: 'overview',
+    }),
+
+
     // Integration Refs
     defineField({
       name: 'sanity',
-      title: 'Sanity',
+      title: 'Sanity.io Integration',
       type: 'reference',
       to: [{type: 'sanityIntegration'}],
       fieldset: 'integrations',
@@ -68,15 +93,15 @@ export const integrations = defineType({
     }),
     defineField({
       name: 'vercel',
-      title: 'Vercel',
+      title: 'Vercel Integration',
       type: 'reference',
       to: [{type: 'vercelIntegration'}],
       fieldset: 'integrations',
       weak: true,
     }),
 defineField({
-  name: 'Github', // <-- Keep this capitalized to match existing documents
-  title: 'GitHub',
+  name: 'Github',
+  title: 'GitHub Integration',
   type: 'reference',
   to: [{type: 'githubIntegration'}],
   fieldset: 'integrations',

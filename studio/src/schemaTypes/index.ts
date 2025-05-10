@@ -10,7 +10,11 @@ import {integrations} from './documents/integrations'
 import {sanityIntegration} from './documents/sanityIntegration'
 import {vercelIntegration} from './documents/vercelIntegration'
 import {githubIntegration} from './documents/githubIntegration'
-
+import {goal} from './documents/goal'
+import {resource} from './documents/resource'
+import {sublink} from './documents/sublink'
+import {completedTask} from './documents/completedTask'
+import {taskTag} from './documents/taskTag'
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
 export const schemaTypes = [
@@ -28,5 +32,10 @@ export const schemaTypes = [
   integrations,
 sanityIntegration,
 vercelIntegration,
-githubIntegration
+githubIntegration,
+goal,
+resource,
+sublink,
+completedTask,
+taskTag
 ]

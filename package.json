@@ -5,9 +5,10 @@
     "dev": "npm-run-all --parallel dev:*",
     "dev:next": "npm run dev --workspace=nextjs-app",
     "dev:studio": "npm run dev --workspace=studio",
-  "sync-env": "ts-node env.sync.ts"
+    "sync-env": "ts-node env.sync.ts"
   },
   "dependencies": {
+    "@sanity/cli": "^3.88.2",
     "styled-components": "^6.1.15"
   },
   "keywords": [
