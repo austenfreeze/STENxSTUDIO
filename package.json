@@ -5,24 +5,23 @@
     "dev": "npm-run-all --parallel dev:*",
     "dev:next": "npm run dev --workspace=nextjs-app",
     "dev:studio": "npm run dev --workspace=studio",
-    "sync-env": "ts-node env.sync.ts"
+    "sync-env": "ts-node env.sync.ts",
+    "postinstall": "npm prune --workspaces",
+    "build": "sanity build --timeout 300000" 
   },
   "dependencies": {
     "@sanity/cli": "^3.88.2",
-    "styled-components": "^6.1.15"
+    "@sanity/ui": "^2.15.17",
+    "@sanity/visual-editing": "^2.13.21",
+    "@sanity/client": "^6.28.0",
+    "@sanity/image-url": "^1.1.0",
+    "@sanity/uuid": "^3.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-is": "^18.2.0",
+    "styled-components": "^6.1.18",
+    "next-sanity": "^9.8.59"
   },
-  "keywords": [
-    "Sanity",
-    "Next.js",
-    "Headless CMS",
-    "Visual Editing",
-    "Live Content API (LCAPI)",
-    "Real-time"
-  ],
-  "bugs": {
-    "url": "https://github.com/sanity-io/sanity-template-nextjs-clean/issues"
-  },
-  "homepage": "https://github.com/sanity-io/sanity-template-nextjs-clean#readme",
   "workspaces": [
     "studio",
     "nextjs-app"

@@ -1,12 +1,33 @@
-import type { NextConfig } from "next"
+import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  env: {
-    SC_DISABLE_SPEEDY: "false",
+  reactStrictMode: true,
+  compiler: {
+    styledComponents: {
+      displayName: true,
+      ssr: true,
+      minify: true,
+    },
   },
   experimental: {
-    serverActions: {}, // ✅ must be an object, not a boolean
+    serverActions: {},
   },
-}
+  env: {
+    SANITY_API_READ_TOKEN: process.env.SANITY_API_READ_TOKEN,
+    SC_DISABLE_SPEEDY: "false",
+  },
+  async headers() {
+    return [
+      {
+        source: "/(.*)",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          { key: "X-XSS-Protection", value: "1; mode=block" },
+        ],
+      },
+    ];
+  },
+};
 
-export default nextConfig
+export default nextConfig;
