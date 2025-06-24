@@ -11,6 +11,7 @@ import { Analytics } from "@vercel/analytics/react"
 import DraftModeToast from "@/app/components/DraftModeToast"
 import Footer from "@/app/components/Footer"
 import Header from "@/app/components/Header"
+import { DisableDraftMode } from "@/components/DisableDraftMode"
 
 import { sanityFetch, SanityLive } from "@/sanity/lib/live"
 import { settingsQuery } from "@/sanity/lib/queries"
@@ -30,7 +31,9 @@ export async function generateMetadata(): Promise<Metadata> {
   })
 
   const title = settings?.title || "STENxSTUDIO"
-  const description = settings?.description || "Developer control center for managing and auditing integrations."
+  const description =
+    settings?.description ||
+    "Developer control center for managing and auditing integrations."
 
   const ogImage = resolveOpenGraphImage(settings?.ogImage)
   let metadataBase: URL | undefined
@@ -70,6 +73,7 @@ export default async function RootLayout({
           <>
             <DraftModeToast />
             <VisualEditing />
+            <DisableDraftMode />
           </>
         )}
         <SanityLive onError={handleError} />

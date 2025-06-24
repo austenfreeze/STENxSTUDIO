@@ -2,23 +2,79 @@ import {DocumentTextIcon} from '@sanity/icons'
 import {format, parseISO} from 'date-fns'
 import {defineField, defineType} from 'sanity'
 
-/**
- * Post schema.  Define and edit the fields for the 'post' content type.
- * Learn more: https://www.sanity.io/docs/schema-types
- */
-
 export const post = defineType({
   name: 'post',
   title: 'Post',
   icon: DocumentTextIcon,
   type: 'document',
+
+  fieldsets: [
+    {name: 'dates', title: 'Dates', options: {columns: 3}},
+    {name: 'title', title: 'Title',},
+  ],
+
   fields: [
+
     defineField({
-      name: 'title',
-      title: 'Title',
+      name: 'coverImage',
+      title: 'Cover Image',
+      type: 'coverImage',
+      }),
+
+    defineField({
+      name: 'postTitle',
+      title: 'Post Title',
       type: 'string',
       validation: (rule) => rule.required(),
+      fieldset: 'title',
     }),
+
+    defineField({
+      name: 'postSubtitle',
+      title: 'Post Subtitle',
+      type: 'string',
+      validation: (rule) => rule.required(),
+      fieldset: 'title',
+    }),
+
+
+    defineField({
+      name: 'publishedAt',
+      title: 'Published At',
+      type: 'datetime',
+      fieldset: 'dates',
+    }),
+
+    defineField({
+      name: 'updatedAt',
+      title: 'Updated At',
+      type: 'datetime',
+      fieldset: 'dates',
+    }),
+
+
+    defineField({
+      name: 'status',
+      title: 'Status',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Draft', value: 'draft'},
+          {title: 'Published', value: 'published'},
+        ],
+        layout: 'dropdown',
+      },
+      initialValue: 'draft',
+      fieldset: 'dates',
+    }),
+
+    defineField({
+      name: 'author',
+      title: 'Author',
+      type: 'reference',
+      to: [{type: 'person'}],
+    }),
+
     defineField({
       name: 'slug',
       title: 'Slug',
@@ -31,65 +87,70 @@ export const post = defineType({
       },
       validation: (rule) => rule.required(),
     }),
+
     defineField({
       name: 'content',
       title: 'Content',
       type: 'blockContent',
     }),
+
     defineField({
-      name: 'excerpt',
-      title: 'Excerpt',
-      type: 'text',
-    }),
-    defineField({
-      name: 'coverImage',
-      title: 'Cover Image',
-      type: 'image',
-      options: {
-        hotspot: true,
-        aiAssist: {
-          imageDescriptionField: 'alt',
-        },
-      },
-      fields: [
-        {
-          name: 'alt',
-          type: 'string',
-          title: 'Alternative text',
-          description: 'Important for SEO and accessibility.',
-          validation: (rule) => {
-            // Custom validation to ensure alt text is provided if the image is present. https://www.sanity.io/docs/validation
-            return rule.custom((alt, context) => {
-              if ((context.document?.coverImage as any)?.asset?._ref && !alt) {
-                return 'Required'
-              }
-              return true
-            })
-          },
-        },
+      name: 'excerpts',
+      title: 'Excerpts',
+      type: 'array',
+      of: [
+        defineField({
+          type: 'object',
+          name: 'excerptBlock',
+          title: 'Excerpt',
+          fields: [
+            {
+              name: 'label',
+              type: 'string',
+              title: 'Label',
+              description: 'E.g., SEO, Summary, Quote, etc.',
+            },
+            {
+              name: 'text',
+              type: 'text',
+              title: 'Text',
+            },
+          ],
+        }),
       ],
-      validation: (rule) => rule.required(),
     }),
+
     defineField({
-      name: 'date',
-      title: 'Date',
-      type: 'datetime',
-      initialValue: () => new Date().toISOString(),
-    }),
-    defineField({
-      name: 'author',
-      title: 'Author',
-      type: 'reference',
-      to: [{type: 'person'}],
+      name: 'relatedPosts',
+      title: 'Related Posts',
+      type: 'array',
+      of: [{type: 'reference', to: {type: 'post'}}],
+      options: {
+        sortable: true,
+      },
+      validation: (rule) => rule.max(5),
     }),
   ],
-  // List preview configuration. https://www.sanity.io/docs/previews-list-views
+
+  orderings: [
+    {
+      title: 'Publish date, newest',
+      name: 'publishDateDesc',
+      by: [{field: 'publishedAt', direction: 'desc'}],
+    },
+    {
+      title: 'Publish date, oldest',
+      name: 'publishDateAsc',
+      by: [{field: 'publishedAt', direction: 'asc'}],
+    },
+  ],
+
   preview: {
     select: {
       title: 'title',
       authorFirstName: 'author.firstName',
       authorLastName: 'author.lastName',
-      date: 'date',
+      date: 'publishedAt',
       media: 'coverImage',
     },
     prepare({title, media, authorFirstName, authorLastName, date}) {
@@ -98,7 +159,11 @@ export const post = defineType({
         date && `on ${format(parseISO(date), 'LLL d, yyyy')}`,
       ].filter(Boolean)
 
-      return {title, media, subtitle: subtitles.join(' ')}
+      return {
+        title,
+        media,
+        subtitle: subtitles.join(' — ')
+      }
     },
   },
 })

@@ -28,7 +28,7 @@ export const sublink = defineType({
       name: 'parentResource',
       title: 'Parent Resource',
       type: 'reference',
-      to: [{type: 'resource'}],
+      to: [{type: 'source'}],
     }),
   ],
   preview: {

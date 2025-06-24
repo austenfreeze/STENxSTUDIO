@@ -13,8 +13,8 @@ export const page = defineType({
   icon: DocumentIcon,
   fields: [
     defineField({
-      name: 'name',
-      title: 'Name',
+      name: 'title',
+      title: 'Title',
       type: 'string',
       validation: (Rule) => Rule.required(),
     }),

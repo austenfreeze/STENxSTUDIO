@@ -58,12 +58,6 @@ export const integrations = defineType({
       type: 'string',
       fieldset: 'overview',
     }),
-    defineField({
-      name: 'projectOutline',
-      title: 'Project Outline',
-      type: 'blockContent',
-      fieldset: 'overview',
-    }),
 
     defineField({
       name: 'projectGoals',

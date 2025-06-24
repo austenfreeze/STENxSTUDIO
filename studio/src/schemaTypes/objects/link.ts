@@ -1,11 +1,6 @@
+// schemas/objects/link.js
 import {defineField, defineType} from 'sanity'
 import {LinkIcon} from '@sanity/icons'
-
-/**
- * Link schema object. This link object lets the user first select the type of link and then
- * then enter the URL, page reference, or post reference - depending on the type selected.
- * Learn more: https://www.sanity.io/docs/object-type
- */
 
 export const link = defineType({
   name: 'link',
@@ -14,68 +9,79 @@ export const link = defineType({
   icon: LinkIcon,
   fields: [
     defineField({
-      name: 'linkType',
-      title: 'Link Type',
+      name: 'title',
+      title: 'Display Text',
       type: 'string',
-      initialValue: 'url',
-      options: {
-        list: [
-          {title: 'URL', value: 'href'},
-          {title: 'Page', value: 'page'},
-          {title: 'Post', value: 'post'},
-        ],
-        layout: 'radio',
-      },
+      description: 'The text that will be displayed for the link (optional).',
     }),
     defineField({
       name: 'href',
-      title: 'URL',
+      title: 'External URL',
       type: 'url',
-      hidden: ({parent}) => parent?.linkType !== 'href',
+      description: 'Link to a web page outside of your own site.',
+      // Make URL validation conditional based on whether an internal link is present
       validation: (Rule) =>
-        // Custom validation to ensure URL is provided if the link type is 'href'
-        Rule.custom((value, context: any) => {
-          if (context.parent?.linkType === 'href' && !value) {
-            return 'URL is required when Link Type is URL'
+        Rule.custom((value, context) => {
+          if (!value && !(context.parent as any)?.internalLink) {
+            return 'You must provide either an External URL or an Internal Link.'
           }
           return true
         }),
     }),
     defineField({
-      name: 'page',
-      title: 'Page',
+      name: 'internalLink',
+      title: 'Internal Link',
       type: 'reference',
-      to: [{type: 'page'}],
-      hidden: ({parent}) => parent?.linkType !== 'page',
-      validation: (Rule) =>
-        // Custom validation to ensure page reference is provided if the link type is 'page'
-        Rule.custom((value, context: any) => {
-          if (context.parent?.linkType === 'page' && !value) {
-            return 'Page reference is required when Link Type is Page'
-          }
-          return true
-        }),
+      description: 'Link to a document within your Sanity project.',
+      to: [
+        // Add all document types you might want to link to internally
+        {type: 'timelineEvent'},
+        {type: 'timeline'},
+        {type: 'person'},
+        {type: 'book'},
+        // Remember to add 'page' and 'post' if you have those schemas
+        // {type: 'page'},
+        // {type: 'post'},
+      ],
     }),
     defineField({
-      name: 'post',
-      title: 'Post',
+      name: 'source',
+      title: 'Source',
       type: 'reference',
-      to: [{type: 'post'}],
-      hidden: ({parent}) => parent?.linkType !== 'post',
-      validation: (Rule) =>
-        // Custom validation to ensure post reference is provided if the link type is 'post'
-        Rule.custom((value, context: any) => {
-          if (context.parent?.linkType === 'post' && !value) {
-            return 'Post reference is required when Link Type is Post'
-          }
-          return true
-        }),
+      to: [{type: 'source'}],
+      description: 'Tag the origin of this link (e.g., Internet Archive).',
     }),
     defineField({
       name: 'openInNewTab',
       title: 'Open in new tab',
       type: 'boolean',
-      initialValue: false,
+      initialValue: true,
     }),
   ],
+  preview: {
+    select: {
+      title: 'title',
+      href: 'href',
+      internalLink: 'internalLink.title',
+      source: 'source.name',
+    },
+    prepare({title, href, internalLink, source}) {
+      // Use the explicitly set title, or the title of the internal link, or the URL itself.
+      const displayTitle = title || internalLink || href || 'No link specified'
+      // Show where the link points to.
+      const subtitle = href
+        ? `External: ${href}`
+        : internalLink
+          ? `Internal: ${internalLink}`
+          : 'No destination'
+
+      // Add the source to the subtitle if it exists.
+      const subtitleWithSource = source ? `${subtitle} (Source: ${source})` : subtitle
+
+      return {
+        title: displayTitle,
+        subtitle: subtitleWithSource,
+      }
+    },
+  },
 })

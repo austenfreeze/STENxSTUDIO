@@ -53,6 +53,14 @@ export const sanityIntegration = defineType({
       fieldset: 'environment',
     }),
     defineField({
+      name: 'dashboardUrl',
+      title: 'Sanity Studio Dashboard',
+      type: 'url',
+      description: "URL Link to the 'Sanity Studio Dashboard'; introduced in the Sanity Spring 2025 Update.",
+      validation: Rule => Rule.required().uri({scheme: ['http', 'https']}),
+      fieldset: 'environment',
+    }),
+    defineField({
       name: 'readToken',
       title: 'API Read Token (Redacted)',
       type: 'string',

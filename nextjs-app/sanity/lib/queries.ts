@@ -1,6 +1,60 @@
-import { defineQuery } from "next-sanity"
+import { defineQuery } from 'next-sanity'
 
+// -----------------------------
+// Block Content Fields
+// -----------------------------
+const blockContentFields = `
+  ...,
+  markDefs[]{
+    ...,
+    _type == "internalLink" => {
+      "href": "/" + @.reference->slug.current
+    },
+    _type == "externalLink" => {
+      "href": @.href,
+      "openInNewTab": @.openInNewTab
+    }
+  },
+  _type == "image" => {
+    ...,
+    "alt": alt
+  },
+  _type == "code" => {
+    ...,
+    language,
+    code
+  }
+`
+
+// -----------------------------
+// Post Fields
+// -----------------------------
+const postFields = `
+  _id,
+  "status": select(_originalId in path("drafts.**") => "draft", "published"),
+  "title": coalesce(title, "Untitled"),
+  "slug": slug.current,
+  excerpt,
+  coverImage,
+  "date": coalesce(date, _updatedAt),
+  "author": author->{firstName, lastName, picture},
+  "categories": coalesce(
+    categories[]->{
+      _id,
+      slug,
+      title
+    },
+    []
+  ),
+  relatedPosts[]{
+    _key,
+    ...@->{_id, title, slug}
+  }
+`
+
+// -----------------------------
 // Singleton: Site Integration Overview
+// -----------------------------
 export const integrationsQuery = defineQuery(`
   *[_type == "integrations" && _id == "singleton-integrations"][0]{
     projectName,
@@ -8,7 +62,6 @@ export const integrationsQuery = defineQuery(`
     primaryDomain,
     projectLead,
     internalNotes,
-
     sanity->{
       projectId,
       dataset,
@@ -36,7 +89,9 @@ export const integrationsQuery = defineQuery(`
   }
 `)
 
+// -----------------------------
 // General Site Settings
+// -----------------------------
 export const settingsQuery = defineQuery(`
   *[_type == "settings"][0]{
     title,
@@ -50,8 +105,25 @@ export const settingsQuery = defineQuery(`
   }
 `)
 
-// Individual Page Queries
-export const getPageQuery = defineQuery(`
+// -----------------------------
+// Slugs
+// -----------------------------
+export const pagesSlugsQuery = defineQuery(`
+  *[_type == "page" && defined(slug.current)]{
+    "slug": slug.current
+  }
+`)
+
+export const postsSlugsQuery = defineQuery(`
+  *[_type == "post" && defined(slug.current)]{
+    "slug": slug.current
+  }
+`)
+
+// -----------------------------
+// Page Queries
+// -----------------------------
+export const pageQuery = defineQuery(`
   *[_type == "page" && slug.current == $slug][0]{
     _id,
     _type,
@@ -59,6 +131,8 @@ export const getPageQuery = defineQuery(`
     slug,
     heading,
     subheading,
+    description,
+    "slug": slug.current,
     pageBuilder[]{
       ...,
       _type == "callToAction" => {
@@ -70,57 +144,24 @@ export const getPageQuery = defineQuery(`
       },
       _type == "infoSection" => {
         content[]{
-          ...,
-          markDefs[]{
-            ...,
-            _type == "link" => {
-              "page": page->slug.current,
-              "post": post->slug.current
-            }
-          }
+          ${blockContentFields}
         }
+      },
+      _type == "blockContent" => {
+        ${blockContentFields}
       }
     }
   }
 `)
 
-// Slugs
-export const pagesSlugs = defineQuery(`
-  *[_type == "page" && defined(slug.current)]{
-    "slug": slug.current
-  }
-`)
-
-export const postPagesSlugs = defineQuery(`
-  *[_type == "post" && defined(slug.current)]{
-    "slug": slug.current
-  }
-`)
-
-// Posts
-const postFields = `
-  _id,
-  "status": select(_originalId in path("drafts.**") => "draft", "published"),
-  "title": coalesce(title, "Untitled"),
-  "slug": slug.current,
-  excerpt,
-  coverImage,
-  "date": coalesce(date, _updatedAt),
-  "author": author->{firstName, lastName, picture}
-`
-
+// -----------------------------
+// Post Queries
+// -----------------------------
 export const postQuery = defineQuery(`
   *[_type == "post" && slug.current == $slug][0]{
     ${postFields},
     content[]{
-      ...,
-      markDefs[]{
-        ...,
-        _type == "link" => {
-          "page": page->slug.current,
-          "post": post->slug.current
-        }
-      }
+      ${blockContentFields}
     }
   }
 `)
@@ -137,8 +178,10 @@ export const morePostsQuery = defineQuery(`
   }
 `)
 
-// Sitemap
-export const sitemapData = defineQuery(`
+// -----------------------------
+// Sitemap Data
+// -----------------------------
+export const sitemapQuery = defineQuery(`
   *[_type == "page" || _type == "post" && defined(slug.current)] | order(_type asc) {
     "slug": slug.current,
     _type,

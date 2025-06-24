@@ -1,3 +1,4 @@
+// schemas/index.ts
 import {person} from './documents/person'
 import {page} from './documents/page'
 import {post} from './documents/post'
@@ -11,11 +12,20 @@ import {sanityIntegration} from './documents/sanityIntegration'
 import {vercelIntegration} from './documents/vercelIntegration'
 import {githubIntegration} from './documents/githubIntegration'
 import {goal} from './documents/goal'
-import {resource} from './documents/resource'
+import {source} from './documents/source'
 import {sublink} from './documents/sublink'
 import {completedTask} from './documents/completedTask'
 import {taskTag} from './documents/taskTag'
-// Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
+import {coverImage} from './objects/coverImage'
+import {book} from './documents/book'
+import {category} from './documents/category'
+import {project} from './project'
+import {logEntry} from './logEntry'
+import {node} from './node'
+import {timelineEvent} from './documents/Timeline/Project Timelines/timelineEvent'
+import {timeline} from './documents/Timeline/timeline'
+import {quote} from './documents/quote';
+import {film} from './documents/film'
 
 export const schemaTypes = [
   // Singletons
@@ -24,18 +34,28 @@ export const schemaTypes = [
   page,
   post,
   person,
+  integrations,
+  sanityIntegration,
+  vercelIntegration,
+  githubIntegration,
+  goal,
+  source,
+  sublink,
+  completedTask,
+  taskTag,
+  book,
+  category,
+  project,
+  logEntry,
+  node,
+  timelineEvent,
+  timeline,
   // Objects
   blockContent,
   infoSection,
   callToAction,
   link,
-  integrations,
-sanityIntegration,
-vercelIntegration,
-githubIntegration,
-goal,
-resource,
-sublink,
-completedTask,
-taskTag
+  coverImage,
+  quote,
+  film,
 ]

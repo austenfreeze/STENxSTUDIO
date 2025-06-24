@@ -1,5 +1,3 @@
-import type { NextConfig } from "next";
-
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   compiler: {
@@ -11,6 +9,9 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {},
+  },
+  devIndicators: {
+    buildActivity: false,
   },
   env: {
     SANITY_API_READ_TOKEN: process.env.SANITY_API_READ_TOKEN,
@@ -29,5 +30,3 @@ const nextConfig: NextConfig = {
     ];
   },
 };
-
-export default nextConfig;
