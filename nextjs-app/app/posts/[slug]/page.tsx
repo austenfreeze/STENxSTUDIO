@@ -5,11 +5,10 @@ import { Suspense } from "react";
 
 import Avatar from "@/app/components/Avatar";
 import CoverImage from "@/app/components/CoverImage";
-// CORRECTED: Assumes `MorePosts` is its own component in a file named `MorePosts.tsx`
-import MorePosts from "@/app/components/MorePosts";
+// CORRECTED: This now imports the singular `Post` component as a named export from the `Post.tsx` file.
+import { Post } from "@/app/components/Post";
 import PortableText from "@/app/components/PortableText";
 import { sanityFetch } from "@/sanity/lib/live";
-// CORRECTED: Changed `postPagesSlugs` to `postSlugs` to match a likely name change.
 import { postSlugs, postQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 
@@ -23,7 +22,6 @@ type Props = {
  */
 export async function generateStaticParams() {
   const { data } = await sanityFetch({
-    // CORRECTED: Using the renamed query variable `postSlugs`
     query: postSlugs,
     // Use the published perspective in generateStaticParams
     perspective: "published",
@@ -109,7 +107,8 @@ export default async function PostPage(props: Props) {
       <div className="border-t border-gray-100">
         <div className="container my-12 lg:my-24 grid gap-12">
           <aside>
-            <Suspense>{await MorePosts({ skip: post._id, limit: 2 })}</Suspense>
+            {/* CORRECTED: This now uses the singular `Post` component to render the list of more posts. */}
+            <Suspense>{await Post({ skip: post._id, limit: 2 })}</Suspense>
           </aside>
         </div>
       </div>
