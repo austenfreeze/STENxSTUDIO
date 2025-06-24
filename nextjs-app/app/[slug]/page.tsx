@@ -4,7 +4,8 @@ import { draftMode } from "next/headers";
 
 import PageBuilderPage from "@/app/components/PageBuilder";
 import { sanityFetch } from "@/sanity/lib/live";
-import { getPageQuery, pagesSlugs } from "@/sanity/lib/queries";
+// CORRECTED: Using the new, consistent query names from queries.ts
+import { pageQuery, pagesSlugsQuery } from "@/sanity/lib/queries";
 import { GetPageQueryResult } from "@/sanity.types";
 import { PageOnboarding } from "@/app/components/Onboarding";
 
@@ -17,7 +18,7 @@ type Props = {
  */
 export async function generateStaticParams() {
   const { data } = await sanityFetch({
-    query: pagesSlugs,
+    query: pagesSlugsQuery,
     perspective: "published",
     stega: false,
   });
@@ -30,7 +31,7 @@ export async function generateStaticParams() {
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params;
   const { data: page } = await sanityFetch({
-    query: getPageQuery,
+    query: pageQuery,
     params,
     stega: false,
   });
@@ -47,7 +48,7 @@ export default async function Page(props: Props) {
 
   const [{ data: page }] = await Promise.all([
     sanityFetch({
-      query: getPageQuery,
+      query: pageQuery,
       params,
       ...(isDraftMode && {
         perspective: "previewDrafts",

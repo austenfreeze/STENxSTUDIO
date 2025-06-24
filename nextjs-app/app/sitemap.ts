@@ -1,14 +1,15 @@
 import { MetadataRoute } from "next";
 import { sanityFetch } from "@/sanity/lib/live";
-import { sitemapData } from "@/sanity/lib/queries";
+// CORRECTED: Using the new, consistent query name from queries.ts
+import { sitemapQuery } from "@/sanity/lib/queries";
 import { headers } from "next/headers";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const allPostsAndPages = await sanityFetch({
-    query: sitemapData,
+    query: sitemapQuery,
   });
-const headersList = await headers();
-const domain = headersList.get("host") || "localhost";
+  const headersList = await headers();
+  const domain = headersList.get("host") || "localhost";
 
 
   const sitemap: MetadataRoute.Sitemap = [
