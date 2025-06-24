@@ -5,10 +5,12 @@ import { Suspense } from "react";
 
 import Avatar from "@/app/components/Avatar";
 import CoverImage from "@/app/components/CoverImage";
-import { MorePosts } from "@/app/components/Post";
+// CORRECTED: Assumes `MorePosts` is its own component in a file named `MorePosts.tsx`
+import MorePosts from "@/app/components/MorePosts";
 import PortableText from "@/app/components/PortableText";
 import { sanityFetch } from "@/sanity/lib/live";
-import { postPagesSlugs, postQuery } from "@/sanity/lib/queries";
+// CORRECTED: Changed `postPagesSlugs` to `postSlugs` to match a likely name change.
+import { postSlugs, postQuery } from "@/sanity/lib/queries";
 import { resolveOpenGraphImage } from "@/sanity/lib/utils";
 
 type Props = {
@@ -21,7 +23,8 @@ type Props = {
  */
 export async function generateStaticParams() {
   const { data } = await sanityFetch({
-    query: postPagesSlugs,
+    // CORRECTED: Using the renamed query variable `postSlugs`
+    query: postSlugs,
     // Use the published perspective in generateStaticParams
     perspective: "published",
     stega: false,
