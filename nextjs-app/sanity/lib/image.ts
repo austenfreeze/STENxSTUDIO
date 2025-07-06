@@ -1,14 +1,17 @@
-import createImageUrlBuilder from "@sanity/image-url"
-import type { SanityImageSource } from "@sanity/image-url/lib/types/types"
+import { client } from "./client"
+import imageUrlBuilder from "@sanity/image-url"
+import type { SanityImageSource } from "@sanity/image-url/lib/types"
 
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID
-const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET
+const builder = imageUrlBuilder(client)
 
-if (!projectId || !dataset) {
-  throw new Error("Missing NEXT_PUBLIC_SANITY_PROJECT_ID or NEXT_PUBLIC_SANITY_DATASET environment variables")
+export function urlFor(source: SanityImageSource) {
+  return builder.image(source)
 }
 
-const imageBuilder = createImageUrlBuilder({ projectId, dataset })
+// Add this export that your CustomPortableText is looking for
+export function urlForImage(source: SanityImageSource) {
+  return builder.image(source)
+}
 
-export const urlFor = (source: SanityImageSource) =>
-  imageBuilder.image(source).auto("format").fit("max")
+// Alternative: you could also export urlFor as urlForImage
+// export { urlFor as urlForImage }
