@@ -1,3 +1,5 @@
+// /studio/sanity.config.tsx
+
 import { defineConfig } from 'sanity'
 import { structureTool } from 'sanity/structure'
 import { visionTool } from '@sanity/vision'
@@ -5,17 +7,16 @@ import { schemaTypes } from './src/schemaTypes'
 import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 import { assist } from '@sanity/assist'
 import { codeInput } from '@sanity/code-input'
-import { Stack, Text, Card } from '@sanity/ui'
-import type { FormFieldProps } from 'sanity'
-import { myTheme } from './src/theme' // 👈 Import the local theme!
+import { myTheme } from './src/theme'
 import { presentationTool } from 'sanity/presentation'
 import { resolve } from '../nextjs-app/sanity/presentation/resolve'
-import { structure, getDefaultDocumentNode } from './src/structure' // 👈 Correct import!
+import { structure } from './src/structure'
+import { defaultDocumentNode } from './src/structure/defaultDocumentNode'
+import { media } from 'sanity-plugin-media'
 
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'vzgvkxtx'
 const dataset = process.env.SANITY_STUDIO_DATASET || 'production'
 
-// rest of your config...
 export default defineConfig({
   name: 'stenxstudio',
   title: 'STENxSTUDIO',
@@ -25,9 +26,10 @@ export default defineConfig({
   plugins: [
     structureTool({
       structure,
-      defaultDocumentNode: getDefaultDocumentNode, // 👈 Correct key & value
+      defaultDocumentNode,
     }),
     visionTool(),
+    media(),
     unsplashImageAsset(),
     assist(),
     codeInput(),
@@ -35,7 +37,7 @@ export default defineConfig({
       resolve,
       previewUrl: {
         origin: process.env.SANITY_STUDIO_PREVIEW_ORIGIN,
-        preview: "/",
+        preview: '/',
         previewMode: {
           enable: '/api/draft-mode/enable',
           disable: '/api/draft-mode/disable',
@@ -44,9 +46,4 @@ export default defineConfig({
     }),
   ],
   schema: { types: schemaTypes },
-  form: {
-    components: {
-      // your custom field components
-    },
-  },
 })

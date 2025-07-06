@@ -3,11 +3,6 @@ import {defineArrayMember, defineField, defineType} from 'sanity'
 
 import * as demo from '../../lib/initialValues'
 
-/**
- * Settings schema Singleton.  Singletons are single documents that are displayed not in a collection, handy for things like site settings and other global configurations.
- * Learn more: https://www.sanity.io/docs/create-a-link-to-a-single-edit-page-in-your-main-document-type-list
- */
-
 export const settings = defineType({
   name: 'settings',
   title: 'Settings',
@@ -29,7 +24,6 @@ export const settings = defineType({
       type: 'array',
       initialValue: demo.description,
       of: [
-        // Define a minified block content field for the description. https://www.sanity.io/docs/block-content
         defineArrayMember({
           type: 'block',
           options: {},
@@ -94,6 +88,15 @@ export const settings = defineType({
           ),
         }),
       ],
+    }),
+    // --- NEW FIELD ---
+    // Add a reference to the 'admin' type to set a site-wide default author.
+    defineField({
+      name: 'defaultAuthor',
+      title: 'Default Author',
+      description: 'The default author for all posts. This can be overridden on a per-post basis.',
+      type: 'reference',
+      to: [{type: 'admin'}],
     }),
   ],
   preview: {

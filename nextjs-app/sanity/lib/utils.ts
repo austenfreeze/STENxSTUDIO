@@ -1,61 +1,77 @@
-import createImageUrlBuilder from "@sanity/image-url";
-import { Link } from "@/sanity.types";
-import { dataset, projectId, studioUrl } from "@/sanity/lib/api";
-import { createDataAttribute, CreateDataAttributeProps } from "next-sanity";
+import createImageUrlBuilder from '@sanity/image-url'
+import type { Image } from 'sanity'
+import type { Metadata } from 'next'
+
+import { dataset, projectId } from '@/sanity/lib/api'
+import type { Link } from '@/sanity.types'
 
 const imageBuilder = createImageUrlBuilder({
-  projectId: projectId || "",
-  dataset: dataset || "",
-});
+  projectId: projectId || '',
+  dataset: dataset || '',
+})
 
-export const urlForImage = (source: any) => {
-  // Ensure that source image contains a valid reference
+export const urlForImage = (source: Image) => {
+  // Ensure that source image has a valid asset ref
   if (!source?.asset?._ref) {
-    return undefined;
+    return undefined
   }
-
-  return imageBuilder?.image(source).auto("format").fit("max");
-};
-
-export function resolveOpenGraphImage(image: any, width = 1200, height = 627) {
-  if (!image) return;
-  const url = urlForImage(image)?.width(1200).height(627).fit("crop").url();
-  if (!url) return;
-  return { url, alt: image?.alt as string, width, height };
+  return imageBuilder?.image(source).auto('format').fit('max')
 }
 
-// Depending on the type of link, we need to fetch the corresponding page, post, or URL.  Otherwise return null.
-export function linkResolver(link: Link | undefined) {
-  if (!link) return null;
+export function resolveOpenGraphImage(image: any, width = 1200, height = 627) {
+  if (!image) return
+  const url = urlForImage(image)?.width(width).height(height).fit('crop').url()
+  if (!url) return
+  return { url, alt: image?.alt as string, width, height }
+}
 
-  // If linkType is not set but href is, lets set linkType to "href".  This comes into play when pasting links into the portable text editor because a link type is not assumed.
+// Helper function to generate metadata
+export function defineMetadata({
+  title,
+  description,
+  image,
+}: {
+  title?: string
+  description?: string
+  image?: Image
+}): Metadata {
+  const openGraphImage = resolveOpenGraphImage(image)
+
+  return {
+    title: title || 'STENxSTUDIO',
+    description: description || 'A Next.js and Sanity project.',
+    openGraph: {
+      title: title || 'STENxSTUDIO',
+      description: description || 'A Next.js and Sanity project.',
+      ...(openGraphImage && { images: [openGraphImage] }),
+    },
+  }
+}
+
+// Helper function to resolve links
+export function linkResolver(link: Link | undefined): string | null {
+  if (!link) return null
+
   if (!link.linkType && link.href) {
-    link.linkType = "href";
+    link.linkType = 'href'
   }
 
   switch (link.linkType) {
-    case "href":
-      return link.href || null;
-    case "page":
-      if (link?.page && typeof link.page === "string") {
-        return `/${link.page}`;
+    case 'href':
+      return link.href || null
+    case 'page':
+      // Assumes the referenced page document has a 'slug' field with a 'current' property
+      if (link?.page && typeof link.page === 'object' && 'slug' in link.page) {
+        return `/${(link.page as any).slug.current}`
       }
-    case "post":
-      if (link?.post && typeof link.post === "string") {
-        return `/posts/${link.post}`;
+      return null
+    case 'post':
+      // Assumes the referenced post document has a 'slug' field with a 'current' property
+      if (link?.post && typeof link.post === 'object' && 'slug' in link.post) {
+        return `/posts/${(link.post as any).slug.current}`
       }
+      return null
     default:
-      return null;
+      return null
   }
-}
-
-type DataAttributeConfig = CreateDataAttributeProps &
-  Required<Pick<CreateDataAttributeProps, "id" | "type" | "path">>;
-
-export function dataAttr(config: DataAttributeConfig) {
-  return createDataAttribute({
-    projectId,
-    dataset,
-    baseUrl: studioUrl,
-  }).combine(config);
 }

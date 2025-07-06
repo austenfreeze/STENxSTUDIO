@@ -1,27 +1,22 @@
-import "./globals.css"
+import './globals.css'
 
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import type { Metadata } from "next"
-import { Inter } from "next/font/google"
-import { draftMode } from "next/headers"
-import { VisualEditing, toPlainText } from "next-sanity"
-import { Toaster } from "sonner"
-import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from '@vercel/speed-insights/next'
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import { draftMode } from 'next/headers'
+import { toPlainText } from 'next-sanity'
+import { Toaster } from 'sonner'
+import { Analytics } from '@vercel/analytics/react'
 
-import DraftModeToast from "@/app/components/DraftModeToast"
-import Footer from "@/app/components/Footer"
-import Header from "@/app/components/Header"
-import { DisableDraftMode } from "@/components/DisableDraftMode"
-
-import { sanityFetch, SanityLive } from "@/sanity/lib/live"
-import { settingsQuery } from "@/sanity/lib/queries"
-import { resolveOpenGraphImage } from "@/sanity/lib/utils"
-import { handleError } from "./client-utils"
+import { sanityFetch, SanityLive } from '@/sanity/lib/live' // <-- Import SanityLive here
+import { settingsQuery } from '@/sanity/lib/queries'
+import { resolveOpenGraphImage } from '@/sanity/lib/utils'
+import { LiveVisualEditing } from '@/components/LiveVisualEditing'
 
 const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
+  variable: '--font-inter',
+  subsets: ['latin'],
+  display: 'swap',
 })
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -30,10 +25,9 @@ export async function generateMetadata(): Promise<Metadata> {
     stega: false,
   })
 
-  const title = settings?.title || "STENxSTUDIO"
+  const title = settings?.title || 'STENxSTUDIO'
   const description =
-    settings?.description ||
-    "Developer control center for managing and auditing integrations."
+    settings?.description || 'A barebones Next.js and Sanity project.'
 
   const ogImage = resolveOpenGraphImage(settings?.ogImage)
   let metadataBase: URL | undefined
@@ -58,34 +52,33 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const { isEnabled: isDraftMode } = await draftMode()
+  const isDraftMode = draftMode().isEnabled
 
   return (
-    <html lang="en" className={`${inter.variable} bg-white text-black`}>
+    <html lang="en" className={`${inter.variable} bg-zinc-900 text-zinc-50`}>
       <body>
         <Toaster />
-        {isDraftMode && (
-          <>
-            <DraftModeToast />
-            <VisualEditing />
-            <DisableDraftMode />
-          </>
-        )}
-        <SanityLive onError={handleError} />
+        {/* Pass the SanityLive component as a prop to the client component */}
+        {isDraftMode && <LiveVisualEditing SanityLive={SanityLive} />}
 
-        {/* HEADER */}
-        <Header />
+        <header className="border-b border-zinc-800 p-4">
+          <div className="container mx-auto">
+            <h1 className="text-xl font-bold">My Sanity Project</h1>
+          </div>
+        </header>
 
-        {/* MAIN CONTENT */}
-        <main className="min-h-screen pt-24">{children}</main>
+        <main className="min-h-screen container mx-auto p-4">{children}</main>
 
-        {/* FOOTER */}
-        <Footer />
+        <footer className="border-t border-zinc-800 p-4 mt-12">
+            <div className="container mx-auto text-center text-zinc-500">
+                <p>&copy; 2025 My Project. All rights reserved.</p>
+            </div>
+        </footer>
 
         <SpeedInsights />
         <Analytics />

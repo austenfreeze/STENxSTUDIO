@@ -1,40 +1,58 @@
-// sanity/lib/queries.ts
-import {groq} from 'next-sanity'
+import { groq } from 'next-sanity'
 
-// Used in: app/[slug]/page.tsx
-export const pageQuery = groq`
+// --- Settings Query ---
+export const settingsQuery = groq`
+  *[_type == "settings"][0]{
+    ...,
+    "defaultAuthor": defaultAuthor->{
+      firstName
+    }
+  }
+`
+
+// --- Post Queries ---
+
+// **FIXED**: This query now projects the slug to a string and selects only the fields needed for the list.
+export const postsQuery = groq`
+  *[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt
+  }
+`
+
+// Fetches a single post by its slug. This query is already correct.
+export const postBySlugQuery = groq`
+  *[_type == "post" && slug.current == $slug][0] {
+    _id,
+    title,
+    "slug": slug.current,
+    publishedAt,
+    excerpt,
+    content,
+    "author": author->{
+      firstName,
+      lastName,
+      picture
+    }
+  }
+`
+
+// Fetches all post slugs for generating static pages. This query is already correct.
+export const postSlugsQuery = groq`
+  *[_type == "post" && defined(slug.current)]{"slug": slug.current}
+`
+
+
+// --- Page Queries ---
+
+// Fetches a single page by its slug. This query is already correct.
+export const pageBySlugQuery = groq`
   *[_type == "page" && slug.current == $slug][0]
 `
-export const pagesSlugsQuery = groq`
-  *[_type == "page" && defined(slug.current)][].slug.current
-`
 
-// Used in: app/posts/[slug]/page.tsx
-export const postQuery = groq`
-  *[_type == "post" && slug.current == $slug][0] {
-    ...,
-    "author": author->
-  }
-`
-export const postSlugsQuery = groq`
-  *[_type == "post" && defined(slug.current)][].slug.current
-`
-
-// Used in: app/sitemap.ts
-export const sitemapQuery = groq`
-  *[_type in ["page", "post"] && defined(slug.current)] {
-    _type,
-    "slug": slug.current,
-    _updatedAt
-  }
-`
-
-// Used in: app/layout.tsx
-export const settingsQuery = groq`
-  *[_type == "settings"][0]
-`
-
-// Used in: app/dashboard/integrations/page.tsx
-export const integrationsQuery = groq`
-  *[_type == "integration"]
+// Fetches all page slugs for generating static pages. This query is already correct.
+export const pageSlugsQuery = groq`
+  *[_type == "page" && defined(slug.current)]{"slug": slug.current}
 `

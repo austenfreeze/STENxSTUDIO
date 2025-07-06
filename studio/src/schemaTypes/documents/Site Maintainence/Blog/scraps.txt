@@ -1,0 +1,24 @@
+  defineField({
+      name: 'updatedAt',
+      title: 'Updated At',
+      type: 'datetime',
+      fieldset: 'dates',
+    }),
+
+
+    defineField({
+      name: 'status',
+      title: 'Status',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Draft', value: 'draft'},
+          {title: 'Published', value: 'published'},
+        ],
+        layout: 'dropdown',
+      },
+      initialValue: 'draft',
+      fieldset: 'dates',
+    }),
+
+_________________________________________

@@ -35,8 +35,6 @@ export const link = defineType({
       description: 'Link to a document within your Sanity project.',
       to: [
         // Add all document types you might want to link to internally
-        {type: 'timelineEvent'},
-        {type: 'timeline'},
         {type: 'person'},
         {type: 'book'},
         // Remember to add 'page' and 'post' if you have those schemas
