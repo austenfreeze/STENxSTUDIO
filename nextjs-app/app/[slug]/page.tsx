@@ -1,40 +1,40 @@
-import { notFound } from 'next/navigation'
-import { toPlainText } from 'next-sanity'
+import { notFound } from "next/navigation"
+import { toPlainText } from "next-sanity"
 
-import { CustomPortableText } from '@/components/CustomPortableText'
-import { sanityFetch } from '@/sanity/lib/live'
-import { client } from '@/sanity/lib/client' // <-- Import the base client
-import { pageBySlugQuery, pageSlugsQuery } from '@/sanity/lib/queries'
-import type { Page } from '@/sanity.types'
-import { defineMetadata } from '@/sanity/lib/utils'
+import { CustomPortableText } from "@/components/CustomPortableText"
+import { sanityFetch } from "@/sanity/lib/live"
+import { client } from "@/sanity/lib/client"
+import { pageBySlugQuery, pageSlugsQuery } from "@/sanity/lib/queries"
+import { defineMetadata } from "@/sanity/lib/utils"
 
 type Props = {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: Props) {
-  const page = await sanityFetch<Page | null>({
+  const { slug } = await params
+  const { data: page } = await sanityFetch({
     query: pageBySlugQuery,
-    params,
+    params: { slug },
     stega: false,
   })
   if (!page) return {}
   return defineMetadata({
     title: page.title,
-    description: page.subheading ? toPlainText(page.subheading) : '',
+    description: page.subheading ? toPlainText(page.subheading) : "",
   })
 }
 
-// This function now uses the base client.fetch for build-time data
 export async function generateStaticParams() {
-  const slugs = await client.fetch<{ slug: string }[]>(pageSlugsQuery)
-  return slugs?.map(({ slug }) => ({ slug })) || []
+  const slugs = await client.fetch(pageSlugsQuery)
+  return slugs?.map(({ slug }: { slug: string }) => ({ slug })) || []
 }
 
 export default async function PageSlugRoute({ params }: Props) {
-  const page = await sanityFetch<Page | null>({
+  const { slug } = await params
+  const { data: page } = await sanityFetch({
     query: pageBySlugQuery,
-    params,
+    params: { slug },
   })
 
   if (!page) {

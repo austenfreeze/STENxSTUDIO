@@ -1,67 +1,54 @@
-import { notFound } from 'next/navigation'
-import { toPlainText } from 'next-sanity'
-
-// Correctly import your PostBody component
-import { PostBody } from '@/app/components/PostBody'
-import { sanityFetch } from '@/sanity/lib/live'
-import { postBySlugQuery, postSlugsQuery } from '@/sanity/lib/queries'
-import type { Post } from '@/sanity.types'
-import { defineMetadata } from '@/sanity/lib/utils'
+import type React from "react"
+import { PortableText, type PortableTextComponents } from "@portabletext/react"
+import { urlForImage } from "@/sanity/lib/image"
+import Image from "next/image"
 
 type Props = {
-  params: { slug: string }
+  content: any[]
 }
 
-export async function generateMetadata({ params }: Props) {
-  const post = await sanityFetch<Post | null>({
-    query: postBySlugQuery,
-    params,
-    stega: false,
-  })
-
-  if (!post) {
-    return {}
-  }
-
-  return defineMetadata({
-    title: post.title,
-    description: post.excerpt ? toPlainText(post.excerpt) : '',
-  })
+const components: PortableTextComponents = {
+  types: {
+    image: ({ value }: { value: any }) => {
+      if (!value?.asset) return null
+      const imgUrl = urlForImage(value.asset).width(800).height(600).url()
+      return (
+        <div className="my-6">
+          <Image
+            src={imgUrl || "/placeholder.svg"}
+            alt={value.alt || "Content image"}
+            width={800}
+            height={600}
+            className="rounded-lg"
+          />
+        </div>
+      )
+    },
+  },
+  marks: {
+    link: ({ children, value }: { children: React.ReactNode; value?: { href?: string } }) => {
+      const rel = value?.href && !value.href.startsWith("/") ? "noreferrer noopener" : undefined
+      return (
+        <a href={value?.href} rel={rel} className="text-blue-400 hover:underline">
+          {children}
+        </a>
+      )
+    },
+  },
+  block: {
+    h1: ({ children }) => <h1 className="text-4xl font-bold my-4">{children}</h1>,
+    h2: ({ children }) => <h2 className="text-3xl font-bold my-4">{children}</h2>,
+    h3: ({ children }) => <h3 className="text-2xl font-bold my-4">{children}</h3>,
+    blockquote: ({ children }) => (
+      <blockquote className="border-l-4 border-gray-500 pl-4 italic my-4">{children}</blockquote>
+    ),
+  },
 }
 
-export async function generateStaticParams() {
-  // THE FIX: Use the fetched array directly, without destructuring 'data'
-  const slugs = await sanityFetch<{ slug: string }[]>({
-    query: postSlugsQuery,
-    perspective: 'published',
-    stega: false,
-  })
-
-  return slugs?.map(({ slug }) => ({ slug })) || []
-}
-
-export default async function PostPage({ params }: Props) {
-  // THE FIX: Use the fetched post object directly
-  const post = await sanityFetch<Post | null>({
-    query: postBySlugQuery,
-    params,
-  })
-
-  if (!post) {
-    return notFound()
-  }
-
+export function PostBody({ content }: Props) {
   return (
-    <div className="p-4 md:p-8">
-      <article>
-        <h1 className="text-4xl font-extrabold tracking-tight mb-4">{post.title}</h1>
-        {post.content ? (
-          // Use your PostBody component here
-          <PostBody content={post.content} />
-        ) : (
-          <p>This post has no content.</p>
-        )}
-      </article>
+    <div className="prose prose-lg prose-invert max-w-none">
+      <PortableText value={content} components={components} />
     </div>
   )
 }

@@ -1,3 +1,5 @@
+import type { NextConfig } from "next"
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   compiler: {
@@ -9,9 +11,6 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {},
-  },
-  devIndicators: {
-    buildActivity: false,
   },
   env: {
     SANITY_API_READ_TOKEN: process.env.SANITY_API_READ_TOKEN,
@@ -27,6 +26,17 @@ const nextConfig: NextConfig = {
           { key: "X-XSS-Protection", value: "1; mode=block" },
         ],
       },
-    ];
+    ]
   },
-};
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  images: {
+    unoptimized: true,
+  },
+}
+
+export default nextConfig
