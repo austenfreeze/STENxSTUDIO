@@ -1,12 +1,15 @@
 // nextjs-app/app/posts/[slug]/page.tsx
 import { notFound } from "next/navigation";
 import { toPlainText } from "next-sanity";
+import { PortableText } from '@portabletext/react'; // Ensure this is imported for PostBody if it renders PortableText
 
 import { PostBody } from "@/components/PostBody";
 import { sanityFetch } from "@/sanity/lib/live";
 import { client } from "@/sanity/lib/client"; // This should be your public Sanity client
 import { postBySlugQuery, postSlugsQuery } from "@/sanity/lib/queries";
 import { defineMetadata } from "@/sanity/lib/utils";
+import type { Metadata } from 'next'; // Import Metadata type
+
 
 type Props = {
   params: { slug: string };
@@ -14,10 +17,8 @@ type Props = {
 
 export const revalidate = 60; // Revalidate every 60 seconds (ISR)
 
-export async function generateStaticParams() {
-  const slugs: string[] = await client.fetch(postSlugsQuery);
-  return slugs?.map((slug) => ({ slug })) || [];
-},
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = params;
   const { data: post } = await sanityFetch({
     query: postBySlugQuery,
     params: { slug },
@@ -35,12 +36,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateStaticParams() {
-  const slugs: string[] = await client.fetch(postSlugsQuery); // 'slugs' is now directly an array of strings
-
-  // Correct the map function: 'slug' is already the string
+  const slugs: string[] = await client.fetch(postSlugsQuery);
   return slugs?.map((slug) => ({ slug })) || [];
-}
+} // <-- REMOVE THE COMMA HERE (it was on line 20 in the log)
 
+// The code continues directly from here to the default export.
 export default async function PostPage({ params }: Props) {
   const { slug } = params;
   const { data: post } = await sanityFetch({
