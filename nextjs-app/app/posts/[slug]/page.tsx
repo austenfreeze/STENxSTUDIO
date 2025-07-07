@@ -2,49 +2,48 @@
 import { notFound } from "next/navigation";
 import { toPlainText } from "next-sanity";
 
-import { PostBody } from "@/components/PostBody"; // Assumed to exist
-import { sanityFetch } from "@/sanity/lib/live"; // Assuming public fetch client
+import { PostBody } from "@/components/PostBody";
+import { sanityFetch } from "@/sanity/lib/live";
 import { client } from "@/sanity/lib/client"; // This should be your public Sanity client
 import { postBySlugQuery, postSlugsQuery } from "@/sanity/lib/queries";
-import { defineMetadata } from "@/sanity/lib/utils"; // Assumed to exist
+import { defineMetadata } from "@/sanity/lib/utils";
 
 type Props = {
-  params: { slug: string }; // Corrected type: params is object, not promise
+  params: { slug: string };
 };
 
-// Revalidate for ISR for individual post pages too
-export const revalidate = 60;
+export const revalidate = 60; // Revalidate every 60 seconds (ISR)
 
-export async function generateMetadata({ params }: Props) {
-  const { slug } = params; // No await needed for params
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = params;
   const { data: post } = await sanityFetch({
     query: postBySlugQuery,
     params: { slug },
     stega: false,
-    // client: publicSanityClient, // Consider explicit client here too
   });
 
   if (!post) {
-    return {}; // Return empty object for metadata if post not found
+    return {};
   }
 
   return defineMetadata({
     title: post.title,
-    description: post.excerpt ? toPlainText(post.excerpt) : "", // Using post.excerpt
+    description: post.excerpt ? toPlainText(post.excerpt) : "",
   });
 }
 
 export async function generateStaticParams() {
-  const slugs = await client.fetch(postSlugsQuery); // Ensure 'client' here is public client
-  return slugs?.map(({ slug }: { slug: { current: string } }) => ({ slug: slug.current })) || [];
+  const slugs: string[] = await client.fetch(postSlugsQuery); // 'slugs' is now directly an array of strings
+
+  // Correct the map function: 'slug' is already the string
+  return slugs?.map((slug) => ({ slug })) || [];
 }
 
 export default async function PostPage({ params }: Props) {
-  const { slug } = params; // No await needed for params
+  const { slug } = params;
   const { data: post } = await sanityFetch({
     query: postBySlugQuery,
     params: { slug },
-    // client: publicSanityClient, // Consider explicit client here too
   });
 
   if (!post) {
@@ -55,7 +54,7 @@ export default async function PostPage({ params }: Props) {
     <div className="p-4 md:p-8">
       <article>
         <h1 className="text-4xl font-extrabold tracking-tight mb-4">{post.title}</h1>
-        {post.content ? ( // Assuming your post schema has a 'content' field for Portable Text
+        {post.content ? (
           <PostBody content={post.content} />
         ) : (
           <p>This post has no content.</p>
