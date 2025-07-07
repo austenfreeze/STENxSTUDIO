@@ -1,6 +1,6 @@
 // nextjs-app/middleware.ts
 import { withAuth } from "next-auth/middleware";
-import { NextRequest, NextResponse } from "next/server"; // Import NextResponse
+import { NextRequest, NextResponse } from "next/server";
 
 export default withAuth({
   pages: {
@@ -8,21 +8,30 @@ export default withAuth({
   },
   callbacks: {
     authorized: async ({ token, req }: { token: any; req: NextRequest }) => {
+      // IMPORTANT: Allow all NextAuth.js API routes to bypass custom authorization
+      // NextAuth.js handles the authentication for these paths internally.
+      if (req.nextUrl.pathname.startsWith('/api/auth')) {
+        return true; // Allow NextAuth.js API routes
+      }
+
       // Define public paths that anyone can access
       const publicPaths = [
         "/", // Landing page
         "/posts", // All posts listing
         /^\/posts\/[^/]+$/, // Individual post slugs like /posts/my-post-slug
         "/auth/signin", // Sign-in page itself
-        "/api/auth", // NextAuth.js API routes (excluding the ones that perform user actions)
-        // Add any other public routes like /about, /contact etc.
+        // '/api/auth', // This line is now handled by the check above, you can remove it if it was here
+        "/auth/UserTypeSelection", // Your user type selection page
+        // Add any other truly public routes like /about, /contact etc.
       ];
 
-      // Check if the requested path starts with any public path (using regex for flexibility)
+      // Check if the requested path is explicitly public
       const isPublicPath = publicPaths.some(path => {
         if (typeof path === 'string') {
+          // Ensure exact match or startWith for string paths
           return req.nextUrl.pathname === path || req.nextUrl.pathname.startsWith(`${path}/`);
         }
+        // For regex paths
         return path.test(req.nextUrl.pathname);
       });
 
@@ -37,8 +46,8 @@ export default withAuth({
   },
 });
 
-// Configure the paths where the middleware should run.
-// This should cover all paths, as we're explicitly allowing public ones above.
+// The matcher configuration should include all paths you want middleware to process.
+// Ensure it doesn't exclude /api/auth directly.
 export const config = {
   matcher: [
     /*
