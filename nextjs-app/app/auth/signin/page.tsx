@@ -34,14 +34,13 @@ function SignInFormContent() {
       password,
       callbackUrl,
     });
-
-    if (result?.error) {
-      setError(result.error);
-    } else if (result?.url) {
-      router.push(result.url);
-    } else {
-      router.push(callbackUrl);
-    }
+if (result?.error) {
+    setError(result.error);
+} else if (result?.url) { // This is the success path
+    router.push(result.url); // Manually redirect
+} else {
+    router.push(callbackUrl); // Fallback redirect if result.url is not provided
+}
   };
 
   if (!loadedProviders) {

@@ -19,12 +19,11 @@ export const authOptions: NextAuthOptions = {
 
         // IMPORTANT: In a real app, fetch admin from Sanity and securely verify password.
         // The returned object MUST have an 'id' property.
-        if (credentials.email === "austentaylorfreeze@gmail.com" && credentials.password === "0179") {
-          // This id should ideally come from a Sanity _id of an 'admin' document
-          return { id: "mock_admin_id_123", name: "Austen Freeze", email: "austentaylorfreeze@gmail.com", role: "admin" };
-        } else {
-          return null;
-        }
+if (credentials.email === "austentaylorfreeze@gmail.com" && credentials.password === "0719") {
+  return { id: "mock_admin_id_123", name: "Austen Freeze", email: "admin@example.com", role: "admin" };
+} else {
+  return null;
+}
       },
     }),
     GoogleProvider({
