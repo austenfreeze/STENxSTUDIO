@@ -25,5 +25,8 @@
     "@emotion/core": {
       "react": "^19.1.0"
     }
+  },
+  "dependencies": {
+    "styled-components": "^6.1.19"
   }
 }

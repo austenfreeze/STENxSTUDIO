@@ -3,6 +3,7 @@ import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { SanityAdapter } from "./sanity-adapter";
+import { sanityClient } from "./sanity"; // Import your Sanity client to query users
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -17,13 +18,34 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        // IMPORTANT: In a real app, fetch admin from Sanity and securely verify password.
-        // The returned object MUST have an 'id' property.
-if (credentials.email === "austentaylorfreeze@gmail.com" && credentials.password === "0719") {
-  return { id: "mock_admin_id_123", name: "Austen Freeze", email: "admin@example.com", role: "admin" };
-} else {
-  return null;
-}
+        // IMPORTANT: In a real app, securely verify password against a hashed password.
+        // For this example, we'll keep the mock password check but fetch the actual Sanity user.
+
+        // Mock password check (replace with secure verification in production)
+        if (credentials.email === "austentaylorfreeze@gmail.com" && credentials.password === "0719") {
+          // Query Sanity to find the 'admin' document by email
+          const adminUser = await sanityClient.fetch(`*[_type == "admin" && email == $email][0]{
+            _id,
+            name,
+            email,
+            role
+          }`, { email: credentials.email });
+
+          if (adminUser) {
+            // Return the actual _id from Sanity as the user.id
+            return {
+              id: adminUser._id,
+              name: adminUser.name,
+              email: adminUser.email,
+              role: adminUser.role || "admin", // Default role if not set in Sanity
+            };
+          } else {
+            console.warn(`Credentials login: No 'admin' document found for email: ${credentials.email}`);
+            return null; // User found in credentials, but no corresponding Sanity document
+          }
+        } else {
+          return null; // Invalid credentials
+        }
       },
     }),
     GoogleProvider({
@@ -31,6 +53,8 @@ if (credentials.email === "austentaylorfreeze@gmail.com" && credentials.password
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       profile(profile) {
         // Map Google profile fields to your 'admin' schema fields
+        // The next-auth-sanity adapter should handle creating/matching the 'admin' document
+        // based on the 'id' (profile.sub) and 'email'.
         return {
           id: profile.sub, // Google's unique user ID (will be stored in _id field if new, or matched)
           name: profile.name, // Will be mapped to firstName, lastName if you want
@@ -61,14 +85,17 @@ if (credentials.email === "austentaylorfreeze@gmail.com" && credentials.password
       }
       return token;
     },
-async redirect({ url, baseUrl }) {
-  if (url.startsWith(baseUrl)) return url;
-  else if (url.startsWith("/")) return new URL(url, baseUrl).toString();
-  return baseUrl;
-},
+    async redirect({ url, baseUrl }) {
+      if (url.startsWith(baseUrl)) return url;
+      else if (url.startsWith("/")) return new URL(url, baseUrl).toString();
+      return baseUrl;
+    },
     async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.role = token.role;
+      // Ensure session.user exists before assigning properties
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.role = token.role;
+      }
       return session;
     },
   },
