@@ -2,17 +2,17 @@
 "use client";
 
 import React, { useState } from 'react';
-import { useSession } from 'next-auth/react'; // To get session data (e.g., user ID for author)
-import { useRouter } from 'next/navigation'; // For programmatic navigation/refresh
-import { Toaster, toast } from 'sonner'; // Assuming you have sonner setup for notifications
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { Toaster, toast } from 'sonner';
 
 export default function CreatePostForm() {
-  const { data: session } = useSession(); // Access the user session
+  const { data: session } = useSession();
   const router = useRouter();
 
   const [title, setTitle] = useState('');
-  const [excerpt, setExcerpt] = useState(''); // For a short summary/description
-  const [content, setContent] = useState(''); // For the main post body (Portable Text)
+  const [excerpt, setExcerpt] = useState('');
+  const [content, setContent] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting'>('idle');
   const [error, setError] = useState<string | null>(null);
 
@@ -21,7 +21,6 @@ export default function CreatePostForm() {
     setStatus('submitting');
     setError(null);
 
-    // Basic validation
     if (!title.trim() || !content.trim()) {
       setError('Title and content cannot be empty.');
       toast.error('Title and content are required!');
@@ -42,26 +41,27 @@ export default function CreatePostForm() {
           // You might pass author ID from session here, or handle on server
           // authorId: session?.user?.id, // If you map session.user.id to Sanity admin._id
         }),
+        credentials: 'include', // <--- THIS IS THE CRITICAL ADDITION
       });
 
       if (!response.ok) {
         const errorData = await response.json();
+        // Log the full error to console for debugging
+        console.error('API Response Error:', errorData);
         throw new Error(errorData.message || 'Failed to publish post.');
       }
 
       const responseData = await response.json();
       toast.success(responseData.message || 'Post published successfully!');
 
-      // Clear form
       setTitle('');
       setExcerpt('');
       setContent('');
       setStatus('idle');
 
-      // Optional: Revalidate the /posts page to show new content immediately (if using ISR)
-      // fetch('/api/revalidate?path=/posts', { method: 'GET' }); // If you set up a revalidation endpoint
-      router.refresh(); // Triggers a soft navigation to refetch data for the current route
+      router.refresh();
     } catch (err: any) {
+      console.error('Client-side catch error:', err);
       setError(err.message);
       toast.error(err.message);
       setStatus('idle');
