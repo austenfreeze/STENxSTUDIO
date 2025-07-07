@@ -1,18 +1,17 @@
-// nextjs-app/app/auth/signin/page.tsx
-"use client"; // Keep this at the very top!
+// app/auth/signin/page.tsx
+"use client";
 
 import { getProviders, signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect, Suspense } from "react"; // Import Suspense
+import { useState, useEffect, Suspense } from "react";
 
-// Define the component that uses useSearchParams
 function SignInFormContent() {
   const router = useRouter();
-  const searchParams = useSearchParams(); // This is the problematic hook
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [loadedProviders, setLoadedProviders] = useState<Record<any, any> | null>(null); // Changed BuiltInProviderType to any for simplicity
+  const [loadedProviders, setLoadedProviders] = useState<Record<any, any> | null>(null);
 
   useEffect(() => {
     const fetchProviders = async () => {
@@ -34,20 +33,23 @@ function SignInFormContent() {
       password,
       callbackUrl,
     });
-if (result?.error) {
-    setError(result.error);
-} else if (result?.url) { // This is the success path
-    router.push(result.url); // Manually redirect
-} else {
-    router.push(callbackUrl); // Fallback redirect if result.url is not provided
-}
+
+    if (result?.error) {
+      setError(result.error);
+    } else {
+      if (result?.url) {
+        router.push(result.url);
+      } else {
+        router.push(callbackUrl);
+      }
+    }
   };
 
   if (!loadedProviders) {
     return <p>Loading providers...</p>;
   }
 
-  return (
+  return ( // <-- ADD THIS RETURN STATEMENT
     <div style={{ padding: "20px", maxWidth: "400px", margin: "50px auto", border: "1px solid #ccc", borderRadius: "8px" }}>
       <h1>Sign In to Enhanced Studio</h1>
 
@@ -81,6 +83,7 @@ if (result?.error) {
         </button>
       </form>
 
+      {/* Social Providers */}
       {loadedProviders &&
         Object.values(loadedProviders).map((provider) => {
           if (provider.id === "credentials") return null;
@@ -93,7 +96,7 @@ if (result?.error) {
           );
         })}
     </div>
-  );
+  ); // <-- CLOSE THE RETURN STATEMENT
 }
 
 // The main default export for the page

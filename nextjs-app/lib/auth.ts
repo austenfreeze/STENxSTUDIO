@@ -61,15 +61,15 @@ if (credentials.email === "austentaylorfreeze@gmail.com" && credentials.password
       }
       return token;
     },
+async redirect({ url, baseUrl }) {
+  if (url.startsWith(baseUrl)) return url;
+  else if (url.startsWith("/")) return new URL(url, baseUrl).toString();
+  return baseUrl;
+},
     async session({ session, token }) {
       session.user.id = token.id;
       session.user.role = token.role;
       return session;
-    },
-    async redirect({ url, baseUrl }) {
-      if (url.startsWith(baseUrl)) return url;
-      else if (url.startsWith("/")) return new URL(url, baseUrl).toString();
-      return baseUrl;
     },
   },
   pages: {
