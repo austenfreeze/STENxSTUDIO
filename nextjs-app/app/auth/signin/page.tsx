@@ -1,24 +1,18 @@
-// app/auth/signin/page.tsx
-"use client";
+// nextjs-app/app/auth/signin/page.tsx
+"use client"; // Keep this at the very top!
 
 import { getProviders, signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
-import type { BuiltInProviderType } from "next-auth/providers/index"; // Import type for providers
+import { useState, useEffect, Suspense } from "react"; // Import Suspense
 
-interface SignInPageProps {
-  // getProviders() is typically fetched server-side in pages router,
-  // but in App Router, it's often fetched client-side.
-  // We'll adjust for client-side fetch.
-}
-
-export default function SignInPage({}: SignInPageProps) {
+// Define the component that uses useSearchParams
+function SignInFormContent() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams(); // This is the problematic hook
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
-  const [loadedProviders, setLoadedProviders] = useState<Record<BuiltInProviderType, any> | null>(null);
+  const [loadedProviders, setLoadedProviders] = useState<Record<any, any> | null>(null); // Changed BuiltInProviderType to any for simplicity
 
   useEffect(() => {
     const fetchProviders = async () => {
@@ -41,7 +35,7 @@ export default function SignInPage({}: SignInPageProps) {
       callbackUrl,
     });
 
-    if (result?.error) { // Check for result existence
+    if (result?.error) {
       setError(result.error);
     } else if (result?.url) {
       router.push(result.url);
@@ -100,5 +94,14 @@ export default function SignInPage({}: SignInPageProps) {
           );
         })}
     </div>
+  );
+}
+
+// The main default export for the page
+export default function SignInPage() {
+  return (
+    <Suspense fallback={<div>Loading sign-in form...</div>}>
+      <SignInFormContent />
+    </Suspense>
   );
 }
