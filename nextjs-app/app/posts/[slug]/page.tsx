@@ -14,8 +14,10 @@ type Props = {
 
 export const revalidate = 60; // Revalidate every 60 seconds (ISR)
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = params;
+export async function generateStaticParams() {
+  const slugs: string[] = await client.fetch(postSlugsQuery);
+  return slugs?.map((slug) => ({ slug })) || [];
+},
   const { data: post } = await sanityFetch({
     query: postBySlugQuery,
     params: { slug },

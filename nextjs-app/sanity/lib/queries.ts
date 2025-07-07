@@ -39,10 +39,9 @@ export const postBySlugQuery = groq`
   }
 `
 
-// Fetches all post slugs for generating static pages. This query is already correct.
 export const postSlugsQuery = groq`
-  *[_type == "post" && defined(slug.current)]{"slug": slug.current}
-`
+  *[_type == "post" && defined(slug.current)][].slug.current
+`;
 
 
 // --- Page Queries ---
@@ -56,3 +55,5 @@ export const pageBySlugQuery = groq`
 export const pageSlugsQuery = groq`
   *[_type == "page" && defined(slug.current)]{"slug": slug.current}
 `
+
+
