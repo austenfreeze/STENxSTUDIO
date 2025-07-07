@@ -1,7 +1,34 @@
 // schemas/documents/integrations.ts
 
-import {defineType, defineField} from 'sanity'
-import {CogIcon} from '@sanity/icons'
+import { defineType, defineField } from 'sanity'
+import { CogIcon } from '@sanity/icons'
+// --- ADDED: Imports for UI components used in the custom preview ---
+import { Card, Stack, Text, Flex, Badge } from '@sanity/ui'
+import React from 'react'
+
+// --- MOVED: The component should be defined outside the schema definition ---
+// This is a custom React component to render a preview in the Sanity Studio
+export const IntegrationPreview = (props: {
+  projectName?: string
+  sanity?: boolean
+  vercel?: boolean
+  github?: boolean
+}) => {
+  const { projectName, sanity, vercel, github } = props
+
+  return (
+    <Card padding={3}>
+      <Stack space={3}>
+        <Text weight="semibold">{projectName || 'Unnamed Project'}</Text>
+        <Flex gap={2}>
+          {sanity && <Badge tone="positive">Sanity</Badge>}
+          {vercel && <Badge tone="primary">Vercel</Badge>}
+          {github && <Badge tone="default">GitHub</Badge>}
+        </Flex>
+      </Stack>
+    </Card>
+  )
+}
 
 export const integrations = defineType({
   name: 'integrations',
@@ -12,12 +39,12 @@ export const integrations = defineType({
     {
       name: 'overview',
       title: 'Project Overview',
-      options: {collapsible: true, collapsed: false},
+      options: { collapsible: true, collapsed: false },
     },
     {
       name: 'integrations',
       title: 'Platform Integrations',
-      options: {collapsible: true, collapsed: false},
+      options: { collapsible: true, collapsed: false },
     },
   ],
   fields: [
@@ -33,7 +60,7 @@ export const integrations = defineType({
       name: 'projectSlug',
       title: 'Project Slug',
       type: 'slug',
-      options: {source: 'projectName', maxLength: 96},
+      options: { source: 'projectName', maxLength: 96 },
       fieldset: 'overview',
       validation: (Rule) => Rule.required(),
     }),
@@ -43,7 +70,7 @@ export const integrations = defineType({
       type: 'url',
       description: 'Public domain for the deployed frontend (e.g., https://xsten.co)',
       fieldset: 'overview',
-      validation: (Rule) => Rule.required().uri({scheme: ['https']}),
+      validation: (Rule) => Rule.required().uri({ scheme: ['https'] }),
     }),
     defineField({
       name: 'studioDomain',
@@ -51,7 +78,7 @@ export const integrations = defineType({
       type: 'url',
       description: 'Personal domain for the deployed Sanity Studio',
       fieldset: 'overview',
-      validation: (Rule) => Rule.required().uri({scheme: ['https']}),
+      validation: (Rule) => Rule.required().uri({ scheme: ['https'] }),
     }),
     defineField({
       name: 'projectLead',
@@ -59,32 +86,27 @@ export const integrations = defineType({
       type: 'string',
       fieldset: 'overview',
     }),
-    
-    // --- REFINED: Changed to an array of references to allow multiple goals ---
     defineField({
       name: 'projectGoals',
       title: 'Project Goals',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'goal'}]}],
+      of: [{ type: 'reference', to: [{ type: 'goal' }] }],
       fieldset: 'overview',
     }),
-
-    // --- REFINED: Changed to an array of references to prevent data duplication ---
     defineField({
-      name: 'completedTasks', // Renamed to plural for consistency
+      name: 'completedTasks',
       title: 'Completed Tasks',
       type: 'array',
-      of: [{type: 'reference', to: [{type: 'completedTask'}]}],
+      of: [{ type: 'reference', to: [{ type: 'completedTask' }] }],
       fieldset: 'overview',
     }),
-
 
     // Integration Refs
     defineField({
       name: 'sanity',
       title: 'Sanity.io Integration',
       type: 'reference',
-      to: [{type: 'sanityIntegration'}],
+      to: [{ type: 'sanityIntegration' }],
       fieldset: 'integrations',
       weak: true,
     }),
@@ -92,32 +114,32 @@ export const integrations = defineType({
       name: 'vercel',
       title: 'Vercel Integration',
       type: 'reference',
-      to: [{type: 'vercelIntegration'}],
+      to: [{ type: 'vercelIntegration' }],
       fieldset: 'integrations',
       weak: true,
     }),
-    
-    // --- REFINED: Changed name to lowercase for consistency ---
     defineField({
       name: 'github',
       title: 'GitHub Integration',
       type: 'reference',
-      to: [{type: 'githubIntegration'}],
+      to: [{ type: 'githubIntegration' }],
       fieldset: 'integrations',
       weak: true,
     }),
   ],
+  // --- CORRECTED: Use the 'components' property to specify a custom preview ---
+  components: {
+    preview: IntegrationPreview,
+  },
   preview: {
+    // --- CORRECTED: Select the fields needed by the custom preview component ---
     select: {
-      title: 'projectName',
-      subtitle: 'primaryDomain',
+      projectName: 'projectName',
+      sanity: 'sanity',
+      vercel: 'vercel',
+      github: 'github',
     },
-    prepare({title, subtitle}) {
-      return {
-        title: title || 'Unnamed Project',
-        subtitle: subtitle || 'No domain set',
-        media: CogIcon,
-      }
-    },
+    // The 'prepare' function is no longer needed as the custom component
+    // receives the selected fields directly as props.
   },
 })

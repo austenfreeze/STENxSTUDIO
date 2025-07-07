@@ -45,7 +45,10 @@ import {vercelIntegration} from './documents/Site Maintainence/Integrations/verc
 import {githubIntegration} from './documents/Site Maintainence/Integrations/githubIntegration'
 import {admin} from './documents/Site Maintainence/admin'
 import {customFile} from './documents/Site Maintainence/customFile'
-import {relatedContent} from './documents/Site Maintainence/relatedContent'
+import {relatedContent} from './documents/Site Maintainence/relatedContent'      // New
+import account from './documents/Site Maintainence/account';
+import session from './documents/Site Maintainence/session';
+
 
 // Editorial Suite
 import {editorialContent} from './documents/Site Maintainence/Blog/editorialContent'
@@ -64,6 +67,7 @@ import {zingThread} from './documents/Site Maintainence/Blog/zingThread'
 import {page} from './documents/Site Maintainence/Pages/page'
 import {post} from './documents/Site Maintainence/Blog/post'
 import {goal} from './documents/Project/goal'
+import {sprint} from './documents/Project/sprint'
 import {completedTask} from './documents/Project/completedTask'
 import {category} from './documents/Site Maintainence/category'
 import {project} from './documents/Project/Project/project'
@@ -152,6 +156,8 @@ magazineIssueCover,
 magazinePage,
 relatedContent,
 voiceRecording,
+account,
+session,
 
 
   // Singletons
