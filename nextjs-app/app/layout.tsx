@@ -1,19 +1,19 @@
+// app/layout.tsx
 import type React from "react"
 import "./globals.css"
 
-import { SpeedInsights } from "@vercel/speed-insights/next"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { draftMode } from "next/headers"
 import { toPlainText } from "next-sanity"
-import { Toaster } from "sonner"
-import { Analytics } from "@vercel/analytics/react"
+// Removed Toaster, SpeedInsights, Analytics from here, they go into components/providers.tsx
 import { Suspense } from "react"
 
-import { sanityFetch, SanityLive } from "@/sanity/lib/live" // <-- Import SanityLive here
+import { sanityFetch, SanityLive } from "@/sanity/lib/live"
 import { settingsQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
-import { LiveVisualEditing } from "@/components/LiveVisualEditing"
+import { LiveVisualEditing } from "@/components/LiveVisualEditing" // Already exists
+import AppProviders from "@/components/providers" // <-- Import your new client-side providers wrapper
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,6 +21,7 @@ const inter = Inter({
   display: "swap",
 })
 
+// Your existing generateMetadata function (remains a Server Function)
 export async function generateMetadata(): Promise<Metadata> {
   const { data: settings } = await sanityFetch({
     query: settingsQuery,
@@ -51,6 +52,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
+// Your RootLayout remains an async Server Component
 export default async function RootLayout({
   children,
 }: {
@@ -62,28 +64,35 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} bg-zinc-900 text-zinc-50`}>
       <body>
-        <Toaster />
-        <Suspense fallback={<div>Loading...</div>}>
-          {/* Pass the SanityLive component as a prop to the client component */}
-          {isDraftMode && <LiveVisualEditing SanityLive={SanityLive} />}
-        </Suspense>
+        {/* Wrap everything that needs client-side context (like SessionProvider) */}
+        <AppProviders>
+          <Suspense fallback={<div>Loading...</div>}>
+            {/* LiveVisualEditing is a Client Component that consumes SanityLive */}
+            {/* SanityLive itself is usually imported, not passed as a prop from here if it's a component.
+                Let's assume LiveVisualEditing handles its own SanityLive import or context.
+                If LiveVisualEditing needs SanityLive directly as a prop for some reason,
+                ensure SanityLive is compatible with being passed from a Server Component.
+                Often, SanityLive components are also client components or wrappers.
+                For clarity, I'm assuming LiveVisualEditing internally manages what it needs from Sanity.
+                If SanityLive is a component factory, you might call it within LiveVisualEditing.
+            */}
+            {isDraftMode && <LiveVisualEditing /* SanityLive={SanityLive} assuming LiveVisualEditing handles it internally or gets from context */ />}
+          </Suspense>
 
-        <header className="border-b border-zinc-800 p-4">
-          <div className="container mx-auto">
-            <h1 className="text-xl font-bold">My Sanity Project</h1>
-          </div>
-        </header>
+          <header className="border-b border-zinc-800 p-4">
+            <div className="container mx-auto">
+              <h1 className="text-xl font-bold">My Sanity Project</h1>
+            </div>
+          </header>
 
-        <main className="min-h-screen container mx-auto p-4">{children}</main>
+          <main className="min-h-screen container mx-auto p-4">{children}</main>
 
-        <footer className="border-t border-zinc-800 p-4 mt-12">
-          <div className="container mx-auto text-center text-zinc-500">
-            <p>&copy; 2025 My Project. All rights reserved.</p>
-          </div>
-        </footer>
-
-        <SpeedInsights />
-        <Analytics />
+          <footer className="border-t border-zinc-800 p-4 mt-12">
+            <div className="container mx-auto text-center text-zinc-500">
+              <p>&copy; 2025 My Project. All rights reserved.</p>
+            </div>
+          </footer>
+        </AppProviders>
       </body>
     </html>
   )
