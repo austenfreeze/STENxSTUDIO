@@ -1,19 +1,22 @@
 // nextjs-app/app/api/posts/create/route.ts
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../../../lib/auth"; // Import your authOptions
-import { sanityClient } from "../../../../lib/sanity"; // Sanity client with write token
+import { authOptions } from "../../../../lib/auth";
+import { sanityClient } from "../../../../lib/sanity";
 import { NextResponse } from "next/server";
 import { Session } from "next-auth";
 
 export async function POST(req: Request) {
+  // It's good to log the session status
   const session: Session | null = await getServerSession(authOptions);
 
-  if (!session) {
-    return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
+  if (!session || !session.user || !session.user.id) {
+    console.error("API Error: Session, user, or user ID not found for post creation.");
+    return NextResponse.json({ message: "Authentication required to create posts." }, { status: 401 });
   }
 
   // Ensure user has a role that can create posts
   if (session.user.role !== "admin" && session.user.role !== "editor" && session.user.role !== "contributor") {
+    console.error(`API Error: User ${session.user.email} with role ${session.user.role} attempted post creation. Insufficient role.`);
     return NextResponse.json({ message: "Forbidden - Insufficient role to create posts." }, { status: 403 });
   }
 
