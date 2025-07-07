@@ -1,9 +1,8 @@
-// lib/auth.ts
-import { NextAuthOptions } from "next-auth"; // Import NextAuthOptions type
+// nextjs-app/lib/auth.ts
+import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { SanityAdapter } from "./sanity-adapter"; // Your Sanity adapter
-// import { sanityClient } from "./sanity"; // Your Sanity client (used by SanityAdapter)
+import { SanityAdapter } from "./sanity-adapter";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -14,55 +13,58 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        // IMPORTANT: This runs on the server!
         if (!credentials?.email || !credentials?.password) {
           return null;
         }
 
-        // Placeholder for demonstration:
-        if (credentials.email === "admin@example.com" && credentials.password === "password123") {
-          // In a real app, securely fetch user from Sanity and verify password.
-          // Example:
-          // const userDoc = await sanityClient.fetch(`*[_type == "user" && email == $email][0]`, { email: credentials.email });
-          // if (!userDoc || !await bcrypt.compare(credentials.password, userDoc.hashedPassword)) {
-          //   return null;
-          // }
-          return { id: "user123", name: "Admin User", email: "admin@example.com", role: "admin" };
+        // IMPORTANT: In a real app, fetch admin from Sanity and securely verify password.
+        // The returned object MUST have an 'id' property.
+        if (credentials.email === "austentaylorfreeze@gmail.com" && credentials.password === "0179") {
+          // This id should ideally come from a Sanity _id of an 'admin' document
+          return { id: "mock_admin_id_123", name: "Austen Freeze", email: "austentaylorfreeze@gmail.com", role: "admin" };
         } else {
           return null;
         }
       },
     }),
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!, // Use ! for non-null assertion as these are required
+      clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
       profile(profile) {
+        // Map Google profile fields to your 'admin' schema fields
         return {
-          id: profile.sub,
-          name: profile.name,
+          id: profile.sub, // Google's unique user ID (will be stored in _id field if new, or matched)
+          name: profile.name, // Will be mapped to firstName, lastName if you want
           email: profile.email,
-          image: profile.picture,
-          role: "editor", // Assign a default role, or fetch from Sanity if user already exists
+          image: profile.picture, // Will be mapped to 'image' URL
+          role: "editor", // Default role for Google users signing up
         };
       },
     }),
   ],
-  adapter: SanityAdapter(),
+  // Pass the schema names to the adapter
+  adapter: SanityAdapter({
+    schemas: {
+      user: "admin", // Tell the adapter to use 'admin' schema for 'user' type
+      account: "account",
+      session: "session",
+    },
+  }),
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60, // 30 days
+    maxAge: 30 * 24 * 60 * 60,
   },
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role; // Now type-safe due to module augmentation
+        token.role = (user as any).role; // Type assertion as 'user' might not explicitly have 'role' without custom types
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id;
-      session.user.role = token.role; // Now type-safe
+      session.user.role = token.role;
       return session;
     },
     async redirect({ url, baseUrl }) {
@@ -81,7 +83,6 @@ export const authOptions: NextAuthOptions = {
   debug: process.env.NODE_ENV === "development",
 };
 
-// Helper to get authOptions, useful for getServerSession
 export function getAuthOptions(): NextAuthOptions {
   return authOptions;
 }
