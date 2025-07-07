@@ -1,8 +1,9 @@
-// app/dashboard/page.tsx
+// nextjs-app/app/dashboard/page.tsx
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "../../lib/auth"; // Import authOptions
-import { Session } from "next-auth"; // Import Session type
+import { authOptions } from "../../lib/auth"; // Assuming this path is now correct
+import { Session } from "next-auth";
+import SignOutButton from "@/components/SignOutButton"; // <-- Import it here
 
 export default async function DashboardPage() {
   const session: Session | null = await getServerSession(authOptions);
@@ -19,20 +20,7 @@ export default async function DashboardPage() {
     <div>
       <h1>Welcome to your Enhanced Studio, {session.user.name || session.user.email}!</h1>
       <p>Your role: {session.user.role}</p>
-      <SignOutButton />
+      <SignOutButton /> {/* Use it like a regular component */}
     </div>
-  );
-}
-
-// components/SignOutButton.tsx (Client Component)
-"use client";
-import { signOut } from "next-auth/react";
-import React from "react";
-
-export default function SignOutButton() {
-  return (
-    <button onClick={() => signOut()} style={{ padding: "10px 15px", backgroundColor: "red", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
-      Sign out
-    </button>
   );
 }
