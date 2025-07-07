@@ -1,9 +1,10 @@
 // nextjs-app/app/dashboard/page.tsx
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { authOptions } from "../../lib/auth"; // Assuming this path is now correct
+import { authOptions } from "../../lib/auth";
 import { Session } from "next-auth";
-import SignOutButton from "@/components/SignOutButton"; // <-- Import it here
+import SignOutButton from "@/components/SignOutButton";
+import CreatePostForm from "@/components/CreatePostForm"; // <-- Import the new component
 
 export default async function DashboardPage() {
   const session: Session | null = await getServerSession(authOptions);
@@ -17,10 +18,17 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div>
-      <h1>Welcome to your Enhanced Studio, {session.user.name || session.user.email}!</h1>
-      <p>Your role: {session.user.role}</p>
-      <SignOutButton /> {/* Use it like a regular component */}
+    <div className="p-4 md:p-8">
+      <h1 className="text-4xl font-bold mb-6 text-white">Welcome to your Enhanced Studio, {session.user.name || session.user.email}!</h1>
+      <p className="text-zinc-400 mb-8">Your role: {session.user.role}</p>
+
+      {/* Post Creation Form */}
+      <CreatePostForm />
+
+      {/* Other Dashboard Content will go here */}
+      <div className="mt-8">
+        <SignOutButton />
+      </div>
     </div>
   );
 }

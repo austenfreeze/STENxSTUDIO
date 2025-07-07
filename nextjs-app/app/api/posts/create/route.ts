@@ -1,48 +1,78 @@
-// app/api/posts/create/route.ts
+// nextjs-app/app/api/posts/create/route.ts
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../../../lib/auth";
-import { sanityClient } from "../../../../lib/sanity";
+import { authOptions } from "../../../../lib/auth"; // Import your authOptions
+import { sanityClient } from "../../../../lib/sanity"; // Sanity client with write token
 import { NextResponse } from "next/server";
-import { Session } from "next-auth"; // Import Session type
+import { Session } from "next-auth";
 
-export async function POST(req: Request) { // Type for Request object
+export async function POST(req: Request) {
   const session: Session | null = await getServerSession(authOptions);
 
   if (!session) {
     return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
   }
 
-  if (session.user.role !== "admin" && session.user.role !== "editor") {
-    return NextResponse.json({ message: "Forbidden - Insufficient role" }, { status: 403 });
+  // Ensure user has a role that can create posts
+  if (session.user.role !== "admin" && session.user.role !== "editor" && session.user.role !== "contributor") {
+    return NextResponse.json({ message: "Forbidden - Insufficient role to create posts." }, { status: 403 });
   }
 
   try {
-    const { title, body, imageUrl } = await req.json(); // req.json() to parse body
+    const { title, excerpt, content } = await req.json();
 
-    if (!title || !body) {
-      return NextResponse.json({ message: "Title and body are required." }, { status: 400 });
+    if (!title || !content) {
+      return NextResponse.json({ message: "Title and content are required." }, { status: 400 });
     }
 
+    // Generate a basic slug from the title
+    const slugValue = title
+      .toLowerCase()
+      .replace(/\s+/g, '-') // Replace spaces with -
+      .replace(/[^\w-]+/g, '') // Remove all non-word chars
+      .replace(/--+/g, '-') // Replace multiple - with single -
+      .trim(); // Trim leading/trailing -
+
+    // Convert plain text content to basic Portable Text block
+    const portableTextContent = [
+      {
+        _key: Math.random().toString(36).substring(2, 9), // Unique key for the block
+        _type: 'block',
+        children: [
+          {
+            _key: Math.random().toString(36).substring(2, 9), // Unique key for the span
+            _type: 'span',
+            marks: [],
+            text: content,
+          },
+        ],
+        markDefs: [],
+      },
+    ];
+
+    // Prepare the new post document for Sanity
     const newPost = {
-      _type: "post",
+      _type: "post", // Your Sanity schema type for posts
       title,
-      body: [{ _type: "block", children: [{ _type: "span", text: body }] }],
       slug: {
         _type: "slug",
-        current: title.toLowerCase().replace(/\s+/g, "-").slice(0, 200),
+        current: slugValue,
       },
-      publishedAt: new Date().toISOString(),
+      excerpt: excerpt || null, // Use excerpt if provided, otherwise null
+      content: portableTextContent, // The Portable Text content
+      publishedAt: new Date().toISOString(), // Set publish date immediately
+      // Link the author to the authenticated user (admin schema)
+      // This assumes session.user.id (from NextAuth) matches an existing admin._id in Sanity
       author: {
         _ref: session.user.id,
         _type: "reference",
       },
-      mainImage: imageUrl ? { _type: "image", asset: { _ref: imageUrl } } : undefined,
+      // You can add other fields here (e.g., categories, tags, mainImage - which would require file upload logic)
     };
 
     const createdPost = await sanityClient.create(newPost);
 
     return NextResponse.json({ message: "Post published successfully!", post: createdPost }, { status: 200 });
-  } catch (error: any) { // Type error as any for simplicity, better to refine
+  } catch (error: any) {
     console.error("Error creating post in Sanity:", error);
     return NextResponse.json({ message: "Failed to publish post.", error: error.message }, { status: 500 });
   }
