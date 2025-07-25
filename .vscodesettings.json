@@ -1,0 +1,63 @@
+{
+    // --- Editor Settings ---
+    "editor.defaultFormatter": "esbenp.prettier-vscode", // Set Prettier as default formatter
+    "editor.formatOnSave": true, // Auto-format on save
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit" // Auto-fix ESLint issues on save
+    },
+    "editor.tabSize": 2, // Standard for JS/React
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    "editor.renderWhitespace": "all",
+    "editor.minimap.enabled": false, // Disable if you don't use it
+    "editor.wordWrap": "off", // Adjust as per your preference
+
+    // --- Files & Folders ---
+    "files.eol": "\n", // Use LF for line endings (common in Git projects)
+    "files.trimTrailingWhitespace": true, // Remove trailing whitespace on save
+    "files.associations": {
+        "*.css": "tailwindcss", // Treat all .css files as Tailwind CSS files for IntelliSense
+        "*.module.css": "css"
+    },
+    "explorer.compactFolders": false, // More spacious file explorer
+
+    // --- JavaScript/TypeScript Settings ---
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "javascript.suggest.autoImports": true,
+    "typescript.suggest.autoImports": true,
+    "javascript.preferences.quoteStyle": "single", // Prefer single quotes
+    "typescript.preferences.quoteStyle": "single",
+
+    // --- ESLint Settings ---
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact"
+    ],
+
+    // --- Prettier Settings (optional, if you want to override global or .prettierrc) ---
+    "prettier.tabWidth": 2,
+    "prettier.useTabs": false,
+    "prettier.singleQuote": true,
+    "prettier.semi": true,
+
+    // --- Tailwind CSS IntelliSense ---
+    "tailwindCSS.experimental.classRegex": [
+        ["tw`([^`]*)`", "([^`]*)"],
+        ["tw(?:.css)`([^`]*)`", "([^`]*)"]
+    ], // If you use tagged template literals with Tailwind
+
+    // --- Vercel Specific ---
+    // You might add specific Vercel CLI path settings if needed, but typically it works globally.
+
+    // --- Sanity Specific ---
+    // Sanity integration largely depends on the extension.
+    // Ensure your Sanity project is correctly set up with environment variables.
+
+    // --- Terminal ---
+    "terminal.integrated.defaultProfile.windows": "Git Bash", // Or whatever shell you prefer
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.scrollback": 1000 // Adjust as needed
+}

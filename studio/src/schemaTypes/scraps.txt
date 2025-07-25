@@ -1,0 +1,57 @@
+  // Corrected `issueHierarchy` field definition
+    defineField({
+      name: 'issueHierarchy',
+      title: 'Hierarchy',
+      type: 'object', // Use 'object' type for a group of fields
+      description: 'Placement In A Series',
+      validation: (rule) => rule.required(),
+      fieldsets: [
+        {name: 'firstInstallment', title: 'First Installment'},
+        {name: 'secondInstallment', title: 'Second Installment'},
+        {name: 'thirdInstallment', title: 'Third Installment'},
+      ],
+      fields: [
+        defineField({
+          name: 'partOne',
+          title: 'Part One',
+          type: 'reference',
+          to: [{type: 'magazineArticle'}],
+          fieldset: 'firstInstallment',
+        }),
+        defineField({
+          name: 'partOnePublishedIn', // Renamed this field
+          title: 'Published In (Part One):',
+          type: 'reference',
+          to: [{type: 'magazineIssue'}],
+          fieldset: 'firstInstallment',
+        }),
+        defineField({
+          name: 'partTwo',
+          title: 'Part Two',
+          type: 'reference',
+          to: [{type: 'magazineArticle'}],
+          fieldset: 'secondInstallment', // Added fieldset
+        }),
+        defineField({
+          name: 'partTwoPublishedIn', // Renamed this field
+          title: 'Published In (Part Two):',
+          type: 'reference',
+          to: [{type: 'magazineIssue'}],
+          fieldset: 'secondInstallment',
+        }),
+        defineField({
+          name: 'partThree',
+          title: 'Part Three',
+          type: 'reference',
+          to: [{type: 'magazineArticle'}],
+          fieldset: 'thirdInstallment', // Added fieldset
+        }),
+        defineField({
+          name: 'partThreePublishedIn', // Renamed this field
+          title: 'Published In (Part Three):',
+          type: 'reference',
+          to: [{type: 'magazineIssue'}],
+          fieldset: 'thirdInstallment',
+        }),
+      ],
+    }),

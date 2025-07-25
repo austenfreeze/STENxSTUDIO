@@ -1,0 +1,40 @@
+{
+  "name": "stenxstudio",
+  "description": "Next.js + Sanity: A Powerful Website Starter with Real-time Visual Editing",
+  "private": true,
+  "scripts": {
+    "predev": "npm run typegen",
+    "dev": "npm-run-all --parallel dev:*",
+    "dev:next": "npm run dev --workspace=nextjs-app",
+    "prebuild": "npm run typegen",
+    "lint": "next lint",
+    "dev:studio": "npm run dev --workspace=studio",
+    "sync-env": "ts-node env.sync.ts",
+    "postinstall": "npm prune --workspaces",
+    "build": "npm run build --workspace=nextjs-app",
+    "typegen": "npm run typegen --workspace=studio",
+    "dev:timeline": "npm run dev --workspace=sdkApps/timeline",
+  },
+"workspaces": [
+  "studio",
+  "nextjs-app",
+  "sdkApps/timeline"
+],
+  "engines": {
+    "node": "22.x"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^15.3.1",
+    "npm-run-all": "^4.1.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "overrides": {
+    "@emotion/core": {
+      "react": "^19.1.0"
+    }
+  },
+  "dependencies": {
+    "styled-components": "^6.1.19"
+  }
+}
