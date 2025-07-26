@@ -52,7 +52,7 @@ import { goal } from './documents/Project/goal';
 import { project } from './documents/Project/Project/project';
 import { researchDocument } from './documents/Project/Project/researchDocument';
 import { sprint } from './documents/Project/sprint';
-import { eventType } from './documents/Timelines/eventType';
+import { event } from './documents/Timelines/event';
 import { timeline } from './documents/Timelines/timeline';
 import { timelineEventNode } from './documents/Timelines/timelineEventNode';
 
@@ -144,7 +144,7 @@ export const schemaTypes = [
   project,
   researchDocument,
   sprint,
-  eventType,
+  event,
   timeline,
   timelineEventNode,
 

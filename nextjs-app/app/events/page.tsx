@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { defineQuery } from "next-sanity";
 import { sanityFetch } from "@/sanity/lib/live";
+import { Event } from "@/sanity.types";
 
 // --- EDITED QUERY ---
 // We now select `timeDate` as an object and access its sub-fields.
@@ -11,7 +12,7 @@ const EVENTS_QUERY = defineQuery(`*[
 ]|order(timeDate.date asc){_id, name, slug, timeDate}`);
 
 export default async function IndexPage() {
-  const { data: events } = await sanityFetch({ query: EVENTS_QUERY });
+const { data: events } = await sanityFetch<Event[]>({ query: EVENTS_QUERY });
 
   return (
     <main className="flex min-h-screen flex-col p-24 gap-12">

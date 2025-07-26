@@ -2,23 +2,20 @@
   "name": "stenxstudio",
   "description": "Next.js + Sanity: A Powerful Website Starter with Real-time Visual Editing",
   "private": true,
-"scripts": {
-  "predev": "npm run typegen",
-  "dev": "npm-run-all --parallel dev:*",
-  "dev:next": "npm run dev --workspace=nextjs-app",
-  "prebuild": "npm run typegen",
-  "lint": "next lint",
-  "dev:studio": "npm run dev --workspace=studio",
-  "sync-env": "ts-node env.sync.ts",
-  "postinstall": "npm prune --workspaces",
-  "build": "npm run build --workspace=nextjs-app",
-  "typegen": "npm run typegen --workspace=studio",
-  "dev:timeline": "npm run dev --workspace=sdkApps/timeline"
-},
+  "scripts": {
+    "predev": "npm run typegen",
+    "dev": "npm-run-all --parallel dev:*",
+    "dev:next": "npm run dev --workspace=nextjs-app",
+    "prebuild": "npm run typegen && copy studio\\sanity.types.ts nextjs-app\\sanity.types.ts",
+    "lint": "next lint",
+    "dev:studio": "npm run dev --workspace=studio",
+    "sync-env": "ts-node env.sync.ts",
+    "postinstall": "npm prune --workspaces",
+    "typegen": "npm run typegen --workspace=studio"
+  },
 "workspaces": [
   "studio",
-  "nextjs-app",
-  "sdkApps/timeline"
+  "nextjs-app"
 ],
   "engines": {
     "node": "22.x"

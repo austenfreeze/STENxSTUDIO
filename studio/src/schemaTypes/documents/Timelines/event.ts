@@ -1,7 +1,7 @@
 // /schemas/eventType.js
 import {defineField, defineType} from 'sanity'
 
-export const eventType = defineType({
+export const event = defineType({
   name: 'event',
   title: 'Event',
   type: 'document',

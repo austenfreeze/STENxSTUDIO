@@ -1,10 +1,17 @@
+// structure.ts or deskStructure.ts
+
+import type {
+  StructureResolver,
+  DefaultDocumentNodeResolver,
+} from 'sanity/structure';
+
+// Import all icons from Sanity
 import {
   CogIcon,
   DocumentIcon,
   UsersIcon,
   PlayIcon,
   BookIcon,
-  TagIcon,
   ComposeIcon,
   ClipboardIcon,
   FolderIcon,
@@ -18,10 +25,9 @@ import {
   EyeOpenIcon,
   LockIcon,
   CalendarIcon,
+  SearchIcon,
   DocumentTextIcon,
-  SearchIcon, // Imported SearchIcon for Research Files
-} from '@sanity/icons'
-import type {StructureBuilder} from 'sanity/desk'
+} from '@sanity/icons';
 
 /**
  * A comprehensive Set of all document types that are handled manually in the structure below.
@@ -90,21 +96,27 @@ const MANUALLY_HANDLED_TYPES = new Set([
   'newspaperIssue',
   'newspaperArticle',
   'newspaperHeadline',
-  'podcast', // Added new schema
-  'podcastEpisode', // Added new schema
+  'podcast',
+  'podcastEpisode',
 
-  // New Schemas
+  // Research
   'researchDocument',
   'timeline',
   'timelineEventNode',
 
+  // Core Pages
   'page',
-])
+]);
 
-export const structure = (S: StructureBuilder) =>
+/**
+ * Defines the custom desk structure for the Sanity Studio.
+ * This function returns a list of items for the main navigation pane.
+ */
+export const structure: StructureResolver = (S) =>
   S.list()
     .title('STENxSTUDIO')
     .items([
+      // --- SITE CONFIGURATION ---
       S.listItem()
         .title('Site Configuration')
         .icon(ControlsIcon)
@@ -127,6 +139,7 @@ export const structure = (S: StructureBuilder) =>
                       S.documentTypeListItem('sanityIntegration').title('Sanity'),
                       S.documentTypeListItem('vercelIntegration').title('Vercel'),
                       S.documentTypeListItem('githubIntegration').title('GitHub'),
+                      S.divider(),
                     ])
                 ),
               S.divider(),
@@ -134,6 +147,7 @@ export const structure = (S: StructureBuilder) =>
         ),
       S.divider(),
 
+      // --- EDITORIAL SUITE ---
       S.listItem()
         .title('Editorial Suite')
         .icon(ComposeIcon)
@@ -157,9 +171,8 @@ export const structure = (S: StructureBuilder) =>
         ),
       S.divider(),
 
-    
-
-  S.listItem()
+      // --- ZING SYSTEM ---
+      S.listItem()
         .title('Zing System')
         .icon(SparklesIcon)
         .child(
@@ -171,19 +184,17 @@ export const structure = (S: StructureBuilder) =>
               S.listItem()
                 .title('Active Zings')
                 .icon(EyeOpenIcon)
-                .child(S.documentList().title('Active Zings').filter('_type == "zing" && status == "active"').apiVersion('v2024-10-28')),
+                .child(S.documentList().title('Active Zings').filter('_type == "zing" && status == "active"')),
               S.divider(),
               S.listItem()
                 .title('Private Zings')
                 .icon(LockIcon)
-                .child(S.documentList().title('Private Zings').filter('_type == "zing" && status == "private"').apiVersion('v2024-10-28')),
+                .child(S.documentList().title('Private Zings').filter('_type == "zing" && status == "private"')),
               S.divider(),
               S.listItem()
                 .title('Archived Zings')
                 .icon(ArchiveIcon)
-                .child(
-                  S.documentList().title('Archived Zings').filter('_type == "zing" && status == "archived"').apiVersion('v2024-10-28')
-                ),
+                .child(S.documentList().title('Archived Zings').filter('_type == "zing" && status == "archived"')),
               S.divider(),
               S.documentTypeListItem('zing').title('All Zings').icon(SparklesIcon),
               S.divider(),
@@ -195,8 +206,7 @@ export const structure = (S: StructureBuilder) =>
       S.listItem()
         .title('Private Notebook')
         .icon(BookIcon)
-        .child(S.documentList().title('Notebook Entries').filter('_type == "notebookEntry"').apiVersion('v2024-10-28')),
-
+        .child(S.documentList().title('Notebook Entries').filter('_type == "notebookEntry"')),
       S.divider(),
 
       // --- PROJECT MANAGEMENT ---
@@ -217,7 +227,7 @@ export const structure = (S: StructureBuilder) =>
         ),
       S.divider(),
 
-      // --- NEW: RESEARCH & TIMELINES ---
+      // --- RESEARCH & TIMELINES ---
       S.listItem()
         .title('Research & Timelines')
         .icon(SearchIcon)
@@ -225,7 +235,7 @@ export const structure = (S: StructureBuilder) =>
           S.list()
             .title('Research & Timelines')
             .items([
-              S.documentTypeListItem('researchDocument').title('Research Document').icon(SearchIcon),
+              S.documentTypeListItem('researchDocument').title('Research Documents').icon(DocumentTextIcon),
               S.divider(),
               S.documentTypeListItem('timeline').title('Timelines').icon(CalendarIcon),
               S.divider(),
@@ -264,7 +274,7 @@ export const structure = (S: StructureBuilder) =>
       // --- MEDIA LIBRARY ---
       S.listItem()
         .title('Media Library')
-        .icon(PlayIcon) // Changed top-level icon to be more generic for media
+        .icon(PlayIcon)
         .child(
           S.list()
             .title('Media Library')
@@ -298,7 +308,6 @@ export const structure = (S: StructureBuilder) =>
                     .items([
                       S.documentTypeListItem('youtubeChannel').title('Youtube Channels'),
                       S.divider(),
-                      // --- PODCASTS SECTION ---
                       S.listItem()
                         .title('Podcasts')
                         .icon(PlayIcon)
@@ -316,7 +325,6 @@ export const structure = (S: StructureBuilder) =>
                     ])
                 ),
               S.divider(),
-
               S.listItem()
                 .title('Bookshelf')
                 .child(
@@ -327,7 +335,6 @@ export const structure = (S: StructureBuilder) =>
                       S.divider(),
                       S.documentTypeListItem('bookCover').title('Book Covers'),
                       S.divider(),
-                      // --- MAGAZINE SECTION ---
                       S.listItem()
                         .title('Magazines')
                         .icon(BookIcon)
@@ -348,10 +355,9 @@ export const structure = (S: StructureBuilder) =>
                             ])
                         ),
                       S.divider(),
-
                       S.listItem()
                         .title('Newspapers')
-                        .icon(ClipboardIcon) // Using ClipboardIcon for newspapers
+                        .icon(ClipboardIcon)
                         .child(
                           S.list()
                             .title('Newspapers')
@@ -382,7 +388,7 @@ export const structure = (S: StructureBuilder) =>
                       S.divider(),
                       S.documentTypeListItem('videoContent').title('Video Content').icon(VideoIcon),
                       S.divider(),
-                      S.documentTypeListItem('voiceRecording').title('Voice Recordings').icon(PlayIcon),
+                      S.documentTypeListItem('voiceRecording').title('Voice Recordings').icon(DocumentTextIcon),
                       S.divider(),
                       S.documentTypeListItem('customImage').title('Custom Images').icon(ImageIcon),
                       S.divider(),
@@ -395,14 +401,20 @@ export const structure = (S: StructureBuilder) =>
 
       // --- CORE PAGES ---
       S.documentTypeListItem('page').title('Pages').icon(DocumentIcon),
+      S.divider(),
 
-      // --- Filter out all manually handled types from the root ---
+      // --- FILTERED OUT LIST OF OTHER TYPES ---
+      // Filter out all manually handled types to prevent duplicates in the root menu.
       ...S.documentTypeListItems().filter(
         (listItem) => !MANUALLY_HANDLED_TYPES.has(listItem.getId() || '')
       ),
-    ])
+      S.divider(), // A final divider at the end of the root list.
+    ]);
 
-// Your existing getDefaultDocumentNode function can remain as is.
-export const getDefaultDocumentNode = (S: StructureBuilder, {schemaType}: {schemaType: string}) => {
-  return S.document().views([S.view.form()])
-}
+/**
+ * Defines the default document node for all document types.
+ * This is used for all documents unless a custom view is defined in the structure.
+ */
+export const getDefaultDocumentNode: DefaultDocumentNodeResolver = (S, { schemaType }) => {
+  return S.document().views([S.view.form()]);
+};
