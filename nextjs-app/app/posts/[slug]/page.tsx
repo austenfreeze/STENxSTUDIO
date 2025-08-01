@@ -1,27 +1,32 @@
+// nextjs-app/app/posts/[slug]/page.tsx
 import { notFound } from "next/navigation";
 import { toPlainText } from "next-sanity";
-import { PortableText } from '@portabletext/react'; // Ensure this is imported for PostBody if it renders PortableText
+import { PortableText } from '@portabletext/react';
 import { PostBody } from "@/components/PostBody";
 import { sanityFetch } from "@/sanity/lib/live";
-import { client } from "@/sanity/lib/client"; // This should be your public Sanity client
+import { client } from "@/sanity/lib/client";
 import { postBySlugQuery, postSlugsQuery } from "@/sanity/lib/queries";
 import { defineMetadata } from "@/sanity/lib/utils";
-import type { Metadata } from 'next'; // Import Metadata type
-
+import type { Metadata } from 'next';
 
 type Props = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>; // params is a Promise
 };
 
 export const revalidate = 60; // Revalidate every 60 seconds (ISR)
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  // Added error handling and direct access for params.slug
-  if (!params || typeof params.slug !== 'string') {
-      console.error("generateMetadata: Invalid params received:", params);
-      return {}; // Return empty metadata if params is not valid
+export async function generateMetadata({ params: paramsPromise }: Props): Promise<Metadata> {
+  // Await params once
+  const params = await paramsPromise;
+  const slug = params.slug; // Access slug after awaiting params
+
+  // No need for typeof params.slug !== 'string' if params is properly awaited and destructured
+  // The error handling below now uses the resolved `slug`
+  if (!slug || typeof slug !== 'string') { // Check the resolved slug
+    console.error("generateMetadata: Invalid slug received:", params);
+    return {};
   }
-  const slug = params.slug; // Corrected access for params
+
   const { data: post } = await sanityFetch({
     query: postBySlugQuery,
     params: { slug },
@@ -41,16 +46,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export async function generateStaticParams() {
   const slugs: string[] = await client.fetch(postSlugsQuery);
   return slugs?.map((slug) => ({ slug })) || [];
-} // Removed the comma
+}
 
-// The code continues directly from here to the default export.
-export default async function PostPage({ params }: Props) {
-  // Added error handling and direct access for params.slug
-  if (!params || typeof params.slug !== 'string') {
-      console.error("PostPage: Invalid params received:", params);
-      return notFound(); // Handle gracefully if params is not valid
+export default async function PostPage({ params: paramsPromise }: Props) {
+  // Await params once
+  const params = await paramsPromise;
+  const slug = params.slug; // Access slug after awaiting params
+
+  // No need for typeof params.slug !== 'string' if params is properly awaited and destructured
+  // The error handling below now uses the resolved `slug`
+  if (!slug || typeof slug !== 'string') { // Check the resolved slug
+    console.error("PostPage: Invalid slug received:", params);
+    return notFound();
   }
-  const slug = params.slug; // Corrected access for params
+
   const { data: post } = await sanityFetch({
     query: postBySlugQuery,
     params: { slug },

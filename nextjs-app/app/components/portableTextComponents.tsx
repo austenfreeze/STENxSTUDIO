@@ -1,5 +1,9 @@
 import { PortableTextComponents } from '@portabletext/react'
+// If you changed image.ts to export 'urlFor', this line is correct:
 import { urlFor } from '@/sanity/lib/image'
+// If you did NOT change image.ts, then this line would be necessary:
+// import { urlForImage } from '@/sanity/lib/image' // And you'd use urlForImage below
+
 import Image from 'next/image'
 import type React from 'react'
 
@@ -7,11 +11,12 @@ export const portableTextComponents: PortableTextComponents = {
   types: {
     image: ({ value }: { value: any }) => {
       if (!value?.asset) return null
+      // Use the correctly imported function name
       const imgUrl = urlFor(value.asset).width(800).height(600).url()
       return (
         <div className="my-6">
           <Image
-            src={imgUrl || '/placeholder.svg'} // Note: You had this in PostBody, so I included it here for consistency
+            src={imgUrl || '/placeholder.svg'}
             alt={value.alt || 'Content image'}
             width={800}
             height={600}
