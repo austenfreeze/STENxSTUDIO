@@ -4,7 +4,6 @@ import { sanityFetch } from "@/sanity/lib/live"; // Assuming this is your client
 import { postsQuery } from "@/sanity/lib/queries";
 import type { Post } from "@/sanity.types"; // Ensure you have this type defined, maybe in sanity-codegen
 
-
 // It's good practice to add revalidate for ISR for public content
 export const revalidate = 60; // Revalidate every 60 seconds (or more/less frequent as needed)
 

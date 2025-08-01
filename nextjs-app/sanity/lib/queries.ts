@@ -12,6 +12,7 @@ export const settingsQuery = groq`
 
 // --- Post Queries ---
 
+// **FIXED**: This query now projects the slug to a string and selects only the fields needed for the list.
 export const postsQuery = groq`
   *[_type == "post" && defined(slug.current)] | order(publishedAt desc) {
     _id,
@@ -21,6 +22,7 @@ export const postsQuery = groq`
   }
 `
 
+// Fetches a single post by its slug. This query is already correct.
 export const postBySlugQuery = groq`
   *[_type == "post" && slug.current == $slug][0] {
     _id,
@@ -53,6 +55,5 @@ export const pageBySlugQuery = groq`
 export const pageSlugsQuery = groq`
   *[_type == "page" && defined(slug.current)]{"slug": slug.current}
 `
-
 
 

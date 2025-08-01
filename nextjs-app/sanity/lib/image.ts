@@ -1,13 +1,9 @@
-// sanity/lib/image.ts
-import createImageUrlBuilder from '@sanity/image-url';
-import type { SanityImageSource } from '@sanity/image-url/lib/types/types';
+import { client } from "./client"
+import imageUrlBuilder from "@sanity/image-url"
+import type { SanityImageSource } from "@sanity/image-url"
 
-import { client } from './client'; // Assumes you have a client.ts file
+const builder = imageUrlBuilder(client)
 
-// Get a pre-configured url-builder from your Sanity client
-const imageBuilder = createImageUrlBuilder(client);
-
-// Helper function to get the image URL
-export const urlFor = (source: SanityImageSource) => {
-  return imageBuilder.image(source);
-};
+export const urlForImage = (source: SanityImageSource) => {
+  return builder.image(source)
+}

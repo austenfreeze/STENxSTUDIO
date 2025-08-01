@@ -1,0 +1,571 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+
+Error with Permissions-Policy header: Parse of permissions policy failed because of errors reported by structured header parser.
+
+react-dom.development.js:11059   GET http://localhost:3000/api/draft-mode/enable?sanity-preview-secret=M2IwMTRmZTRkODY0YzNhZGZjMzBjOTBiZTEzZjM5MWE&sanity-preview-perspective=drafts&sanity-preview-pathname=%2F 401 (Unauthorized)
+
+appendChild @ react-dom.development.js:11059
+
+insertOrAppendPlacementNode @ react-dom.development.js:23941
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+insertOrAppendPlacementNode @ react-dom.development.js:23947
+
+commitPlacement @ react-dom.development.js:23883
+
+commitReconciliationEffects @ react-dom.development.js:24630
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24333
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24385
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24385
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24549
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24503
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24549
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24503
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24385
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24371
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24385
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24615
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24549
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24503
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+commitMutationEffectsOnFiber @ react-dom.development.js:24332
+
+recursivelyTraverseMutationEffects @ react-dom.development.js:24312
+
+XMLHttpRequest.send
+
+d @ browser-request.ts:128
+
+(anonymous) @ createRequester.ts:104
+
+publish @ pubsub.ts:18
+
+(anonymous) @ observable.ts:32
+
+Observable2._trySubscribe @ Observable.ts:235
+
+(anonymous) @ Observable.ts:225
+
+errorContext @ errorContext.ts:29
+
+Observable2.subscribe @ Observable.ts:211
+
+(anonymous) @ dataMethods.ts:642
+
+Observable2._trySubscribe @ Observable.ts:235
+
+(anonymous) @ Observable.ts:225
+
+errorContext @ errorContext.ts:29
+
+Observable2.subscribe @ Observable.ts:211
+
+(anonymous) @ filter.ts:68
+
+(anonymous) @ lift.ts:24
+
+(anonymous) @ Observable.ts:217
+
+errorContext @ errorContext.ts:29
+
+Observable2.subscribe @ Observable.ts:211
+
+(anonymous) @ map.ts:53
+
+(anonymous) @ lift.ts:24
+
+(anonymous) @ Observable.ts:217
+
+errorContext @ errorContext.ts:29
+
+Observable2.subscribe @ Observable.ts:211
+
+(anonymous) @ map.ts:53
+
+(anonymous) @ lift.ts:24
+
+(anonymous) @ Observable.ts:217
+
+errorContext @ errorContext.ts:29
+
+Observable2.subscribe @ Observable.ts:211
+
+(anonymous) @ lastValueFrom.ts:59
+
+lastValueFrom @ lastValueFrom.ts:56
+
+delete @ SanityClient.ts:1714
+
+createPreviewSecret @ createPreviewSecret.ts:28
+
+[NEW] Explain Console errors by using Copilot in Edge: click
+
+         
+
+         to explain an error. 
+
+        Learn more
+
+        Don't show again
+
+Preview.tsx:208  Unable to connect to visual editing. Make sure you've setup '@sanity/visual-editing' correctly
+
+
+
+
+Show thinking
+Based on these new console errors, we've made significant progress! The original X-Frame-Options issue appears to be resolved, but we've hit a new security token problem.
+
+Let's break down the errors and provide the solutions.
+
+1. Error with Permissions-Policy header
+This error is coming from your next.config.js. The Permissions-Policy header has a syntax error. The browser is unable to parse the Browse-topics=() directive.
+
+Solution: Remove the Browse-topics=() part from your next.config.js or correct its syntax. A simpler and more common approach is to use a more standardized set of policies.
+
+Here is the corrected headers() section of your next.config.js:
+
+JavaScript
+
+async headers() {
+  return [
+    {
+      source: "/(.*)",
+      headers: [
+        { key: "X-Content-Type-Options", value: "nosniff" },
+        { key: "X-XSS-Protection", value: "1; mode=block" },
+        {
+          key: "Strict-Transport-Security",
+          value: "max-age=63072000; includeSubDomains; preload",
+        },
+        {
+          key: "Permissions-Policy",
+          // Corrected syntax for common policies.
+          value: "camera=(), microphone=(), geolocation=()",
+        },
+      ],
+    },
+  ];
+},
+This will eliminate the console error related to the Permissions-Policy header.
+
+2. 401 (Unauthorized) on the draft-mode/enable API Route
+This is the main blocker for visual editing. The 401 error means that the secret token provided in the URL does not match the secret token stored in your Next.js application's environment variables.
+
+Error Analysis:
+The browser tried to call this URL:
+http://localhost:3000/api/draft-mode/enable?sanity-preview-secret=M2IwMTRmZTRkODY0YzNhZGZjMzBjOTBiZTEzZjM5MWE&...
+
+Your environment variables show this secret:
+NEXT_PUBLIC_SANITY_PREVIEW_SECRET="21404165961b73b5ca52887d06c70770205c029e46a3f71bdffb224435c2f4d3"
+
+As you can see, the secret token in the URL (M2Iw...) does not match the secret token you have defined in your environment variable (2140...). This is a critical mismatch.
+
+Solution: Synchronize the Secret Tokens
+
+You need to make sure the token being sent by your Sanity Studio matches the token your Next.js API route expects. There are two ways to fix this:
+
+a) (Recommended) Use the Same Token for All Environments
+Ensure the NEXT_PUBLIC_SANITY_PREVIEW_SECRET in your Next.js .env file is the same one you've configured in your Sanity project settings.
+
+Go to your Sanity Studio.
+
+Navigate to Settings > API.
+
+Find your project's preview secret. It might be labeled token or previewSecret in your setup.
+
+Copy this value.
+
+Paste it into your Next.js .env file for the NEXT_PUBLIC_SANITY_PREVIEW_SECRET variable.
+
+b) Regenerate and Update Both
+If you're unsure which token is the "right" one, you can:
+
+Generate a new, random secret token (e.g., using an online generator or a command-line tool).
+
+Update the NEXT_PUBLIC_SANITY_PREVIEW_SECRET in your Next.js .env file with this new token.
+
+Ensure your Sanity Studio configuration is also using this new token.
+
+The draft-mode/enable API route you created earlier is correct, as it checks for this environment variable. The problem is with the value itself.
+
+Final Action Plan
+Correct your next.config.js by updating the Permissions-Policy header.
+
+Synchronize your tokens. Make sure the value of NEXT_PUBLIC_SANITY_PREVIEW_SECRET in your .env file is an exact match for the token Sanity Studio is sending in the URL.
+
+Restart both your Next.js app and your Sanity Studio. This is essential to ensure they both pick up the latest environment variables and configurations.
+
+Once the tokens are synchronized, the 401 (Unauthorized) error will be resolved, and the Sanity Visual Editing connection will be established.

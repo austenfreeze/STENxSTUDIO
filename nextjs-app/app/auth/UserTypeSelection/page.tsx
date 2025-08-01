@@ -3,10 +3,19 @@
 
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import React from 'react';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 
 export default function UserTypeSelectionPage() {
-  const { status } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  // If already logged in, redirect to dashboard
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.push('/dashboard');
+    }
+  }, [session, status, router]);
 
   if (status === 'loading') {
     return (
@@ -16,7 +25,7 @@ export default function UserTypeSelectionPage() {
     );
   }
 
-  // If not authenticated, or if authenticated but we want to allow path selection, show the options
+  // If not authenticated, show the selection options
   return (
     <div className="min-h-[calc(100vh-160px)] flex flex-col items-center justify-center text-center">
       <h1 className="text-4xl font-bold mb-8 text-white">Choose Your Path</h1>

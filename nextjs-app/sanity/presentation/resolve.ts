@@ -1,16 +1,11 @@
 // root/nextjs-app/sanity/presentation/resolve.ts
 
 import { defineLocations, PresentationPluginOptions } from 'sanity/presentation'
-
 import { SanityDocument } from 'sanity'
 
 export const resolve: PresentationPluginOptions['resolve'] = {
   locations: {
-
-
-
     // Defines live preview locations for 'post' documents
-
     post: defineLocations({
       select: {
         title: 'title',
@@ -26,11 +21,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
         ],
       }),
     }),
-
-
-
     // Defines live preview locations for 'page' documents
-
     page: defineLocations({
       select: {
         title: 'title',
@@ -46,11 +37,8 @@ export const resolve: PresentationPluginOptions['resolve'] = {
         ],
       }),
     }),
-
-
-
     // Defines live preview locations for 'project' documents
-
+    // Assuming 'project' has a 'title' and a 'slug' field
     project: defineLocations({
       select: {
         title: 'title',
@@ -65,12 +53,7 @@ export const resolve: PresentationPluginOptions['resolve'] = {
         ],
       }),
     }),
-
-
-
-
     // This provides a default for any schemas not explicitly handled
-
     default: defineLocations({
       resolve: () => ({
         locations: [

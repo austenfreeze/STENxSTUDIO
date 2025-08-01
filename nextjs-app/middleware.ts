@@ -1,54 +1,42 @@
-// nextjs-app/middleware.ts
-import { NextRequest, NextResponse } from "next/server";
-import { withAuth } from "next-auth/middleware";
-import { withVisualEditing } from "next-sanity/visual-editing/middleware";
+// nextjs-app/middleware.ts (for next-auth v5)
+import { auth } from "./lib/auth" // Assuming you create a lib/auth.ts for Auth.js handler
+import { NextResponse } from "next/server"
 
-const withAuthMiddleware = withAuth({
-  pages: {
-    signIn: "/auth/signin",
-  },
-  callbacks: {
-    authorized: async ({ token, req }: { token: any; req: NextRequest }) => {
-      // Allow all NextAuth.js API routes
-      if (req.nextUrl.pathname.startsWith('/api/auth')) {
-        return true;
-      }
+export default auth((req) => {
+  // Your logic for protecting routes goes here.
+  // This is a simplified example based on your previous logic.
 
-      // Define public paths that anyone can access
-      const publicPaths = [
-        "/",
-        "/posts",
-        /^\/posts\/[^/]+$/,
-        "/auth/signin",
-        "/auth/UserTypeSelection",
-      ];
+  const { nextUrl } = req;
+  const isLoggedIn = !!req.auth; // req.auth will be present if authenticated
 
-      const isPublicPath = publicPaths.some(path => {
-        if (typeof path === 'string') {
-          return req.nextUrl.pathname === path || req.nextUrl.pathname.startsWith(`${path}/`);
-        }
-        return path.test(req.nextUrl.pathname);
-      });
+  // Define public paths that anyone can access (mirroring your previous logic)
+  const publicPaths = [
+    "/",
+    "/posts",
+    /^\/posts\/[^/]+$/, // Individual post slugs
+    "/auth/signin",
+    "/auth/UserTypeSelection",
+  ];
 
-      if (isPublicPath) {
-        return true;
-      }
+  const isPublicPath = publicPaths.some(path => {
+    if (typeof path === 'string') {
+      return nextUrl.pathname === path || nextUrl.pathname.startsWith(`${path}/`);
+    }
+    return path.test(nextUrl.pathname);
+  });
 
-      // For all other paths, check for a valid token
-      return !!token;
-    },
-  },
+  // If it's a public path or the user is logged in, allow access
+  if (isPublicPath || isLoggedIn) {
+    return NextResponse.next();
+  }
+
+  // If not logged in and not a public path, redirect to sign-in
+  return NextResponse.redirect(new URL("/auth/signin", nextUrl));
 });
 
-// `withVisualEditing` is a helper that wraps your middleware.
-// It detects requests from Sanity Studio and sets the correct headers to allow embedding.
-export default withVisualEditing(withAuthMiddleware);
-
+// The matcher configuration remains similar for Next.js middleware
 export const config = {
   matcher: [
-    // Include all pages in your app, but exclude Next.js internals, public files, and NextAuth.js API routes.
-    // The visual editing middleware needs to run on all pages that will be previewed.
-    // Make sure to add any other routes that should be handled by the middleware.
-    '/((?!_next/static|_next/image|favicon.ico|api/auth|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };

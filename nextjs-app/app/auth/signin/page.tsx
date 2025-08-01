@@ -15,12 +15,12 @@ function SignInFormContent() {
 
   useEffect(() => {
     const fetchProviders = async () => {
-      const allProviders = await getProviders(); // This is the key line
+      const allProviders = await getProviders();
       setLoadedProviders(allProviders);
     };
     fetchProviders();
   }, []);
-  
+
   const handleCredentialsSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
@@ -98,6 +98,8 @@ function SignInFormContent() {
     </div>
   ); // <-- CLOSE THE RETURN STATEMENT
 }
+
+// The main default export for the page
 export default function SignInPage() {
   return (
     <Suspense fallback={<div>Loading sign-in form...</div>}>

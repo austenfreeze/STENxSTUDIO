@@ -1,6 +1,8 @@
+// nextjs-app/postcss.config.js
 module.exports = {
   plugins: {
-    tailwindcss: {}, // Correct name for the Tailwind CSS PostCSS plugin
+    // Change 'tailwindcss' to '@tailwindcss/postcss'
+    '@tailwindcss/postcss': {}, // This is the new way to include the Tailwind PostCSS plugin
     autoprefixer: {},
   },
 };
