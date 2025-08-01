@@ -1,7 +1,6 @@
 // app/api/auth/[...nextauth]/route.ts
-import NextAuth from "next-auth";
-import { authOptions } from "../../../../lib/auth";
+// Import handlers directly from your Auth.js configuration file
+import { handlers } from "../../../../lib/auth"; // Adjust path if lib/auth.ts is elsewhere
 
-const handler = NextAuth(authOptions);
-
-export { handler as GET, handler as POST }; // <-- Make sure this line is clean
+// Export the GET and POST handlers
+export const { GET, POST } = handlers;
