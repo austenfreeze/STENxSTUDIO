@@ -1,10 +1,11 @@
-import Link from 'next/link';
-import React from 'react'; // Explicitly import React for JSX
+// C:\Users\Administrator\Desktop\STENxSTUDIO\nextjs-app\app\page.tsx
+import Link from 'next/link'; // Import Link
+import React from 'react';
 
 export default function LandingPage() {
   return (
-    <div className="min-h-[calc(100vh-160px)] flex flex-col items-center justify-center text-center">
-      <h1 className="text-5xl font-extrabold mb-8 text-white">Welcome to STENxSTUDIO</h1>
+    <div className="min-h-[calc(100vh-160px)] flex flex-col items-center justify-center text-center bg-zinc-900 text-white">
+      <h1 className="text-5xl font-extrabold mb-4">Welcome to STENxSTUDIO</h1>
       <p className="text-xl text-zinc-300 mb-12 max-w-2xl">
         Your portal for creative expression and curated content.
       </p>
@@ -13,9 +14,7 @@ export default function LandingPage() {
         <Link href="/posts" className="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow-lg transition-colors duration-200">
           Explore Public Content
         </Link>
-        <Link href="/auth/UserTypeSelection" className="px-8 py-4 bg-zinc-700 hover:bg-zinc-600 text-white font-semibold rounded-lg shadow-lg transition-colors duration-200">
-          Access Studio (Private)
-        </Link>
+        {/* Removed "Access Studio (Private)" link since auth is disabled */}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-// app/layout.tsx
+// app/layout.tsx (No changes from previous version, kept for context)
 import type React from "react"
 import "./globals.css"
 
@@ -6,14 +6,13 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { draftMode } from "next/headers"
 import { toPlainText } from "next-sanity"
-// Removed Toaster, SpeedInsights, Analytics from here, they go into components/providers.tsx
 import { Suspense } from "react"
 
 import { sanityFetch, SanityLive } from "@/sanity/lib/live"
 import { settingsQuery } from "@/sanity/lib/queries"
 import { resolveOpenGraphImage } from "@/sanity/lib/utils"
-import { LiveVisualEditing } from "@/components/LiveVisualEditing" // Already exists
-import AppProviders from "@/components/providers" // <-- Import your new client-side providers wrapper
+import { LiveVisualEditing } from "@/components/LiveVisualEditing"
+import AppProviders from "@/components/providers" // This import stays
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,7 +20,6 @@ const inter = Inter({
   display: "swap",
 })
 
-// Your existing generateMetadata function (remains a Server Function)
 export async function generateMetadata(): Promise<Metadata> {
   const { data: settings } = await sanityFetch({
     query: settingsQuery,
@@ -52,7 +50,6 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-// Your RootLayout remains an async Server Component
 export default async function RootLayout({
   children,
 }: {
@@ -64,19 +61,11 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} bg-zinc-900 text-zinc-50`}>
       <body>
-        {/* Wrap everything that needs client-side context (like SessionProvider) */}
+        {/* AppProviders (now without SessionProvider) still wraps children */}
         <AppProviders>
           <Suspense fallback={<div>Loading...</div>}>
-            {/* LiveVisualEditing is a Client Component that consumes SanityLive */}
-            {/* SanityLive itself is usually imported, not passed as a prop from here if it's a component.
-                Let's assume LiveVisualEditing handles its own SanityLive import or context.
-                If LiveVisualEditing needs SanityLive directly as a prop for some reason,
-                ensure SanityLive is compatible with being passed from a Server Component.
-                Often, SanityLive components are also client components or wrappers.
-                For clarity, I'm assuming LiveVisualEditing internally manages what it needs from Sanity.
-                If SanityLive is a component factory, you might call it within LiveVisualEditing.
-            */}
-            {isDraftMode && <LiveVisualEditing /* SanityLive={SanityLive} assuming LiveVisualEditing handles it internally or gets from context */ />}
+            {/* LiveVisualEditing remains active for Sanity Visual Editing */}
+            {isDraftMode && <LiveVisualEditing />}
           </Suspense>
 
           <header className="border-b border-zinc-800 p-4">
