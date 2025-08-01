@@ -9,6 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@auth/nextjs": "^0.0.0-380f8d56",
     "@builder.io/react": "^8.2.2",
     "@builder.io/sdk-react": "^4.2.1",
     "@emotion/react": "^11.14.0",

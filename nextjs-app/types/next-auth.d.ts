@@ -1,24 +1,31 @@
 // types/next-auth.d.ts
-import { DefaultSession, DefaultUser } from "next-auth";
-import { JWT } from "next-auth/jwt";
+import NextAuth from "next-auth";
 
+// Extend the NextAuth.js types to include custom properties
+// This ensures TypeScript knows about 'role' on session.user and token
 declare module "next-auth" {
+  /**
+   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
   interface Session {
-    admin: { // Renamed from 'user' to 'admin'
-      id: string;
-      role?: "admin" | "editor" | "contributor" | "user";
-    } & DefaultSession["user"]; // Keep DefaultSession's user properties
+    user: {
+      id: string; // Ensure ID is part of the user object
+      role?: string; // Add role property
+    } & DefaultSession["user"];
   }
 
-  interface User extends DefaultUser {
-    id: string;
-    role?: "admin" | "editor" | "contributor" | "user";
+  interface User {
+    id: string; // Add id to user type
+    role?: string; // Add role to user type
   }
 }
 
 declare module "next-auth/jwt" {
+  /**
+   * Returned by the `jwt` callback and `getToken`, when using JWT sessions
+   */
   interface JWT {
-    id: string;
-    role?: "admin" | "editor" | "contributor" | "user";
+    id: string; // Add id to JWT token
+    role?: string; // Add role property
   }
 }

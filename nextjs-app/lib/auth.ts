@@ -1,58 +1,43 @@
-// nextjs-app/lib/auth.ts
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials"; // Example: assuming you use credentials
+import NextAuth from "@auth/nextjs"; // This is the v5 (Auth.js) import for Next.js apps
+import Credentials from "next-auth/providers/credentials";
 
-// You can add other providers here (e.g., Google, GitHub)
-// import GoogleProvider from "next-auth/providers/google";
 
 export const {
-  handlers: { GET, POST }, // Destructure GET and POST from handlers
-  auth, // The 'auth' function for server-side session checks
+  handlers: { GET, POST },
+  auth,
   signIn,
   signOut,
 } = NextAuth({
-  // Configure your authentication providers
   providers: [
     Credentials({
-      name: "Credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
+      // ...
       async authorize(credentials) {
         // **IMPORTANT**: Replace this with your actual user validation logic
-        // e.g., fetch user from your Sanity backend or a database
-        if (credentials.email === "test@example.com" && credentials.password === "password") {
-          return { id: "user123", name: "Test User", email: "test@example.com" };
+        if (credentials.email === "austentaylorfreeze@gmail.com" && credentials.password === "0719") {
+          return { id: "ACF", name: "head", email: "austentaylorfreeze@gmai.com", role: "admin" }; // <-- ADD ROLE HERE
         }
-        return null; // Return null if authentication fails
+        return null;
       },
     }),
-    // Add other providers if needed:
-    // GoogleProvider({
-    //   clientId: process.env.GOOGLE_CLIENT_ID!,
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    // }),
   ],
-  // Define custom pages (like your sign-in page)
   pages: {
-    signIn: "/auth/signin", // Your custom sign-in page
+    signIn: "/auth/signin",
   },
-  // Callbacks for session and JWT management
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        (token as any).role = (user as any).role; // <-- Cast token to any to add role, or define Jwt type
       }
       return token;
     },
     async session({ session, token }) {
       if (token) {
-        session.user.id = token.id as string; // Add user ID to session
+        session.user.id = token.id as string;
+        (session.user as any).role = (token as any).role; // <-- Cast session.user to any to add role, or define Session type
       }
       return session;
     },
   },
-  // Optional: Add a secret for JWT encryption
   secret: process.env.NEXTAUTH_SECRET,
 });
