@@ -1,162 +1,63 @@
-// tailwind.config.ts
-import type { Config } from 'tailwindcss'
+import type { Config } from 'tailwindcss';
+
+
 
 const config: Config = {
-  content: [
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
-  theme: {
-    extend: {
-      gridTemplateColumns: {
-        '13': 'repeat(13, minmax(0, 1fr))',
-      },
-      colors: {
-        // Primary and Accent Colors
-        'cosmic-wave': { // HEX: 077FA1 | CSS: 7, 127, 161, 1
-          DEFAULT: '#077FA1',
-          50: '#E0F0F3',
-          100: '#C7E4E9',
-          200: '#9AD0DA',
-          300: '#6CBECD',
-          400: '#3FADC0',
-          500: '#077FA1',
-          600: '#067291',
-          700: '#055F7A',
-          800: '#034C63',
-          900: '#02394C',
-          950: '#012B3A',
-        },
-        'golden-staff': { // HEX: CA8619 | CSS: 202, 134, 25, 1
-          DEFAULT: '#CA8619',
-          50: '#FDF7EB',
-          100: '#FCEFDB',
-          200: '#F8DFBB',
-          300: '#F4CF9C',
-          400: '#F0BF7C',
-          500: '#CA8619',
-          600: '#B77A16',
-          700: '#A46E13',
-          800: '#916110',
-          900: '#7E550D',
-          950: '#6E4A0B',
-        },
-        'eternal-emerald': { // HEX: 408E66 | CSS: 64, 142, 102, 1
-          DEFAULT: '#408E66',
-          50: '#EAF4EE',
-          100: '#DBE9E2',
-          200: '#B8D5C8',
-          300: '#94C1AE',
-          400: '#71AD94',
-          500: '#408E66',
-          600: '#3A805C',
-          700: '#337152',
-          800: '#2C6248',
-          900: '#25543D',
-          950: '#1F4835',
-        },
 
-        // Neutral / Background / Text Colors
-        'all-the-smoke': { // HEX: F6F6F1 | CSS: 246, 246, 241, 1
-          DEFAULT: '#F6F6F1',
-          50: '#FFFFFF', // Using pure white for very light shades
-          100: '#FAFAFA',
-          200: '#F8F8F8',
-          300: '#F6F6F1',
-          400: '#EFEFEA',
-          500: '#E2E2DC',
-          600: '#D5D5D0',
-          700: '#C8C8C4',
-          800: '#BBBBB8',
-          900: '#AEAEAC',
-          950: '#A1A1A0',
-        },
-        'obsidian-tomb': { // HEX: 191921 | CSS: 25, 25, 33, 1
-          DEFAULT: '#191921',
-          50: '#F1F1F3',
-          100: '#D5D5DA',
-          200: '#B8B8C2',
-          300: '#9C9CA9',
-          400: '#7F7F91',
-          500: '#52525A',
-          600: '#35353D',
-          700: '#2D2D34',
-          800: '#26262B',
-          900: '#1F1F24',
-          950: '#191921',
-        },
-        'aestroidz-dust': { // HEX: D1D3CD | CSS: 209, 211, 205, 1
-          DEFAULT: '#D1D3CD',
-          50: '#FBFBFB',
-          100: '#F7F8F6',
-          200: '#F2F3F0',
-          300: '#EDEEEA',
-          400: '#E4E5DF',
-          500: '#D1D3CD',
-          600: '#BCBDAB',
-          700: '#A7A895',
-          800: '#92927F',
-          900: '#7E7E69',
-          950: '#696954',
-        },
-        'stormchaser': { // HEX: 4D595D | CSS: 77, 89, 93, 1
-          DEFAULT: '#4D595D',
-          50: '#EDEFF0',
-          100: '#DEE2E4',
-          200: '#C4CCD0',
-          300: '#A9B5B9',
-          400: '#8F9FA3',
-          500: '#4D595D',
-          600: '#455054',
-          700: '#3D474B',
-          800: '#353D41',
-          900: '#2D3437',
-          950: '#252B2E',
-        },
-        'unfinished': { // HEX: CCCDD2 | CSS: 204, 205, 210, 1
-          DEFAULT: '#CCCDD2',
-          50: '#FBFBFD',
-          100: '#F7F7F8',
-          200: '#F2F3F4',
-          300: '#EDEDF0',
-          400: '#E4E4E6',
-          500: '#CCCDD2',
-          600: '#BABAAD',
-          700: '#A7A79A',
-          800: '#949487',
-          900: '#818175',
-          950: '#6E6E62',
-        },
-        'venusionz-blood': { // HEX: 750C10 | CSS: 117, 12, 16
-          DEFAULT: '#750C10',
-          50: '#FBF6F6',
-          100: '#F7ECEA',
-          200: '#EED3D3',
-          300: '#E4BBBC',
-          400: '#DAA3A5',
-          500: '#750C10',
-          600: '#6A0B0E',
-          700: '#5F090C',
-          800: '#54080B',
-          900: '#490709',
-          950: '#3E0507',
-        },
-      },
-      keyframes: {
-        shimmer: {
-          '100%': {
-            transform: 'translateX(100%)',
-          },
-        },
-      },
-    },
-  },
-  plugins: [
-    require('@tailwindcss/typography'),
-    // If you were using @tailwindcss/forms in the template's config, add it here too:
-    // require('@tailwindcss/forms'),
-  ],
+  content: [
+
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+
+  ],
+
+  theme: {
+
+    extend: {
+
+      gridTemplateColumns: {
+
+        '13': 'repeat(13, minmax(0, 1fr))',
+
+      },
+
+      colors: {
+
+        blue: {
+
+          400: '#2589FE',
+
+          500: '#0070F3',
+
+          600: '#2F6FEB',
+
+        },
+
+      },
+
+    },
+
+    keyframes: {
+
+      shimmer: {
+
+        '100%': {
+
+          transform: 'translateX(100%)',
+
+        },
+
+      },
+
+    },
+
+  },
+
+  plugins: [require('@tailwindcss/forms')],
+
 };
 
 export default config;
