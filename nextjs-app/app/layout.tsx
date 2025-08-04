@@ -1,4 +1,4 @@
-// app/layout.tsx (No changes from previous version, kept for context)
+// app/layout.tsx
 import type React from "react"
 import "./globals.css"
 
@@ -59,25 +59,24 @@ export default async function RootLayout({
   const isDraftMode = draftModeData.isEnabled
 
   return (
-    <html lang="en" className={`${inter.variable} bg-zinc-900 text-zinc-50`}>
+    // Updated HTML tag with custom background and text colors
+    <html lang="en" className={`${inter.variable} bg-obsidian-tomb-950 text-all-the-smoke-50`}>
       <body>
-        {/* AppProviders (now without SessionProvider) still wraps children */}
         <AppProviders>
           <Suspense fallback={<div>Loading...</div>}>
-            {/* LiveVisualEditing remains active for Sanity Visual Editing */}
             {isDraftMode && <LiveVisualEditing />}
           </Suspense>
 
-          <header className="border-b border-zinc-800 p-4">
+          <header className="border-b border-stormchaser-700 p-4"> {/* Updated border color */}
             <div className="container mx-auto">
-              <h1 className="text-xl font-bold">My Sanity Project</h1>
+              <h1 className="text-xl font-bold text-golden-staff-500">My Sanity Project</h1> {/* Updated text color */}
             </div>
           </header>
 
           <main className="min-h-screen container mx-auto p-4">{children}</main>
 
-          <footer className="border-t border-zinc-800 p-4 mt-12">
-            <div className="container mx-auto text-center text-zinc-500">
+          <footer className="border-t border-stormchaser-700 p-4 mt-12"> {/* Updated border color */}
+            <div className="container mx-auto text-center text-aestroidz-dust-400"> {/* Updated text color */}
               <p>&copy; 2025 My Project. All rights reserved.</p>
             </div>
           </footer>
