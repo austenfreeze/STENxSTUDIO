@@ -97,6 +97,8 @@ const MANUALLY_HANDLED_TYPES = new Set([
   'researchDocument',
   'timeline',
   'timelineEventNode',
+  'foiaDatabase', // Added foiaDatabase to the manually handled types
+  'foiaDocument', // Added foiaDocument to the manually handled types
 
   'page',
 ])
@@ -157,9 +159,7 @@ export const structure = (S: StructureBuilder) =>
         ),
       S.divider(),
 
-    
-
-  S.listItem()
+      S.listItem()
         .title('Zing System')
         .icon(SparklesIcon)
         .child(
@@ -228,6 +228,25 @@ export const structure = (S: StructureBuilder) =>
               S.documentTypeListItem('researchDocument').title('Research Document').icon(SearchIcon),
               S.divider(),
               S.documentTypeListItem('timeline').title('Timelines').icon(CalendarIcon),
+              S.divider(),
+            ])
+        ),
+      S.divider(),
+
+      // --- NEW: DOCUMENT DATABASE ---
+      S.listItem()
+        .title('Document Database')
+        .icon(DocumentIcon)
+        .child(
+          S.list()
+            .title('FOIA Reading Room')
+            .items([
+              S.listItem()
+                .title('FOIA Database')
+                .icon(FolderIcon)
+                .child(S.document().schemaType('foiaDatabase').documentId('foiaDatabase')),
+              S.divider(),
+              S.documentTypeListItem('foiaDocument').title('Documents').icon(DocumentTextIcon),
               S.divider(),
             ])
         ),
