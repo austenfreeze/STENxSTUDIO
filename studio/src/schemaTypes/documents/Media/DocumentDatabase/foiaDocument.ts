@@ -25,20 +25,15 @@ export default defineType({
       },
       validation: (Rule) => Rule.required(),
     }),
-    defineField({
-      name: 'author',
-      title: 'Author',
-      type: 'reference',
-      to: [{type: 'admin'}],
-    }),
-    defineField({
-      name: 'documentFile',
-      title: 'Document File',
-      type: 'file',
-      options: {
-        hotspot: true,
-      },
-    }),
+defineField({
+  name: 'author',
+  title: 'Author',
+  type: 'reference',
+  to: [
+    { type: 'admin' },
+    { type: 'youtubeChannel' },
+  ],
+}),
     defineField({
       name: 'summary',
       title: 'Summary',
@@ -64,6 +59,12 @@ export default defineType({
       options: {
         layout: 'tags'
       },
+    }),
+
+    defineField({
+      name: 'localDocument',
+      title: 'Local Document',
+      type: 'file',
     }),
     // The old datePublished field has been replaced with this new object type
     defineField({

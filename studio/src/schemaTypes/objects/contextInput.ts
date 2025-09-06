@@ -3,8 +3,8 @@ import {ComposeIcon} from '@sanity/icons'
 
 /**
  * Defines the 'contextInput' object.
- * This is a self-contained block that adds a layer of context to a root zing.
- * It's built around its own zing and enriched with metadata.
+ * This is a self-contained block that adds a layer of context to a root post.
+ * It's built around its own post and enriched with metadata.
  */
 export const contextInput = defineType({
   name: 'contextInput',
@@ -13,10 +13,10 @@ export const contextInput = defineType({
   icon: ComposeIcon,
   fields: [
     defineField({
-      name: 'zing',
-      title: 'Context Zing',
+      name: 'post',
+      title: 'Context Post',
       type: 'reference',
-      to: [{type: 'zing'}],
+      to: [{type: 'post'}],
       description: 'The core thought or data point for this context block.',
       validation: (rule) => rule.required(),
     }),
@@ -47,9 +47,9 @@ export const contextInput = defineType({
   ],
   preview: {
     select: {
-      title: 'zing.content',
-      subtitle: 'zing.author.firstName',
-      media: 'zing.author.picture',
+      title: 'post.content',
+      subtitle: 'post.author.firstName',
+      media: 'post.author.picture',
     },
     prepare({title, subtitle, media}) {
       return {

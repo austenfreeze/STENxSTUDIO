@@ -1,3 +1,5 @@
+// studio/src/structure/index.ts
+
 import {
   CogIcon,
   DocumentIcon,
@@ -19,44 +21,105 @@ import {
   LockIcon,
   CalendarIcon,
   DocumentTextIcon,
-  SearchIcon, // Imported SearchIcon for Research Files
+  SearchIcon,
 } from '@sanity/icons'
 import type {StructureBuilder} from 'sanity/desk'
 
-/**
- * A comprehensive Set of all document types that are handled manually in the structure below.
- * This is CRITICAL to prevent them from appearing at the root of the studio and creating duplicates.
- * Make sure every document type you add to the structure is also added to this Set.
- */
+// Corrected import paths for schema types
+import {person} from '../schemaTypes/documents/People and Entities/People/person';
+import {publisher} from '../schemaTypes/documents/People and Entities/Entities/publisher';
+import {company} from '../schemaTypes/documents/People and Entities/Entities/company';
+import {newsOrganization} from '../schemaTypes/documents/People and Entities/Entities/newsOrganization';
+import {source} from '../schemaTypes/documents/People and Entities/source';
+import {quote} from '../schemaTypes/documents/People and Entities/quote';
+import {crewMember} from '../schemaTypes/documents/People and Entities/People/crewMember';
+import {castMember} from '../schemaTypes/documents/People and Entities/People/castMember';
+import {youtubeChannel} from '../schemaTypes/documents/People and Entities/youtubeChannel';
+import {mediaGallery} from '../schemaTypes/documents/Media/Images/mediaGallery';
+import {customImage} from '../schemaTypes/documents/Media/Images/customImage';
+import {voiceRecording} from '../schemaTypes/documents/Media/Audio/voiceRecording';
+import {film} from '../schemaTypes/documents/Media/Film TV Radio Music and Internet Media/film';
+import {book} from '../schemaTypes/documents/Media/Bookshelf/book/book';
+import {bookCover} from '../schemaTypes/documents/Media/Bookshelf/Book/bookCoversFrontandBack';
+import {magazine} from '../schemaTypes/documents/Media/Bookshelf/Magazine/magazine';
+import {magazineArticle} from '../schemaTypes/documents/Media/Bookshelf/Magazine/magazineArticle';
+import {magazineIssue} from '../schemaTypes/documents/Media/Bookshelf/Magazine/magazineIssue';
+import {magazineIssueCover} from '../schemaTypes/documents/Media/Bookshelf/Magazine/magazineIssueCover';
+import {magazinePage} from '../schemaTypes/documents/Media/Bookshelf/Magazine/magazinePage';
+import foiaDocument from '../schemaTypes/documents/Media/DocumentDatabase/foiaDocument';
+import foiaDatabase from '../schemaTypes/documents/Media/DocumentDatabase/foiaDatabase';
+import {podcast} from '../schemaTypes/documents/Media/Film TV Radio Music and Internet Media/Podcast/podcast';
+import {podcastEpisode} from '../schemaTypes/documents/Media/Film TV Radio Music and Internet Media/Podcast/podcastEpisode';
+import {newspaper} from '../schemaTypes/documents/Media/Bookshelf/Newspaper/newspaper';
+import {newspaperArticle} from '../schemaTypes/documents/Media/Bookshelf/Newspaper/newspaperArticle';
+import {newspaperIssue} from '../schemaTypes/documents/Media/Bookshelf/Newspaper/newspaperIssue';
+import {newspaperHeadline} from '../schemaTypes/documents/Media/Bookshelf/Newspaper/newspaperHeadline';
+import {logo} from '../schemaTypes/documents/Media/Images/logo';
+import {season} from '../schemaTypes/documents/Media/Film TV Radio Music and Internet Media/Television/season';
+import {tvShowEpisode} from '../schemaTypes/documents/Media/Film TV Radio Music and Internet Media/Television/televisionEpisode';
+import {documentary} from '../schemaTypes/documents/Media/Film TV Radio Music and Internet Media/documentary';
+import {tvShow} from '../schemaTypes/documents/Media/Film TV Radio Music and Internet Media/Television/tvShow';
+import {televisionNetwork} from '../schemaTypes/documents/People and Entities/Entities/televisionNetwork';
+import {videoContent} from '../schemaTypes/documents/Media/Film TV Radio Music and Internet Media/videoContent';
+import {integrations} from '../schemaTypes/documents/Site Maintainence/Integrations/integrations';
+import {sanityIntegration} from '../schemaTypes/documents/Site Maintainence/Integrations/sanityIntegration';
+import {vercelIntegration} from '../schemaTypes/documents/Site Maintainence/Integrations/vercelIntegration';
+import {githubIntegration} from '../schemaTypes/documents/Site Maintainence/Integrations/githubIntegration';
+import {customFile} from '../schemaTypes/documents/Site Maintainence/customFile';
+import {relatedContent} from '../schemaTypes/documents/Site Maintainence/relatedContent';
+import {admin} from '../schemaTypes/documents/People and Entities/People/Admin/admin';
+import {adminProfile} from '../schemaTypes/documents/People and Entities/People/Admin/adminProfile';
+import {articleSeries} from '../schemaTypes/documents/Media/Bookshelf/Magazine/articleSeries';
+import {referencedPeople} from '../schemaTypes/documents/Site Maintainence/referencedPeople';
+import {postThread} from '../schemaTypes/documents/Site Maintainence/blog/postThread';
+import {seriesNavigation} from '../schemaTypes/objects/seriesNavigation';
+import {pageBuilderType} from '../schemaTypes/blocks/pageBuilderType';
+import {featuresType} from '../schemaTypes/blocks/featuresType';
+import {heroType} from '../schemaTypes/blocks/heroType';
+import {splitImageType} from '../schemaTypes/blocks/splitImageType';
+import {
+  multimediaArticle,
+  editorialThread,
+  researchElement,
+  notebookEntry,
+} from '../schemaTypes/documents/Site Maintainence/Blog/editorialSuite';
+import {page} from '../schemaTypes/documents/Site Maintainence/Pages/page';
+import {post} from '../schemaTypes/documents/Site Maintainence/Blog/post';
+import {goal} from '../schemaTypes/documents/Project/goal';
+import {sprint} from '../schemaTypes/documents/Project/sprint';
+import {completedTask} from '../schemaTypes/documents/Project/completedTask';
+import {category} from '../schemaTypes/documents/Site Maintainence/category';
+import {project} from '../schemaTypes/documents/Project/Project/project';
+import {researchDocument} from '../schemaTypes/documents/Project/Project/researchDocument';
+import {timeline} from '../schemaTypes/documents/Timelines/timeline';
+import {timelineEventNode} from '../schemaTypes/documents/Timelines/timelineEventNode';
+import {settings} from '../schemaTypes/singletons/settings';
+import {callToAction} from '../schemaTypes/objects/callToAction';
+import {infoSection} from '../schemaTypes/objects/infoSection';
+import {pullQuote} from '../schemaTypes/objects/pullQuote';
+import {researchCitation} from '../schemaTypes/objects/researchCitation';
+import {contextInput} from '../schemaTypes/objects/contextInput';
+import {richTextContent} from '../schemaTypes/objects/richTextContent';
+import {link} from '../schemaTypes/objects/link';
+
+
 const MANUALLY_HANDLED_TYPES = new Set([
-  // Singletons & Config
   'settings',
   'integrations',
   'sanityIntegration',
   'vercelIntegration',
   'githubIntegration',
-
-  // Editorial Suite
   'multimediaArticle',
   'editorialThread',
   'post',
   'researchElement',
   'quote',
   'category',
-
-  // Zing System
-  'zing',
-  'zingThread',
-
-  // Private Notebook
+  'postThread',
   'notebookEntry',
-
-  // Project Management
   'project',
   'goal',
   'completedTask',
-
-  // Knowledge Graph
   'admin',
   'person',
   'crewMember',
@@ -66,8 +129,6 @@ const MANUALLY_HANDLED_TYPES = new Set([
   'publisher',
   'newsOrganization',
   'televisionNetwork',
-
-  // Media Library
   'film',
   'tvShow',
   'season',
@@ -90,16 +151,13 @@ const MANUALLY_HANDLED_TYPES = new Set([
   'newspaperIssue',
   'newspaperArticle',
   'newspaperHeadline',
-  'podcast', // Added new schema
-  'podcastEpisode', // Added new schema
-
-  // New Schemas
+  'podcast',
+  'podcastEpisode',
   'researchDocument',
   'timeline',
   'timelineEventNode',
-  'foiaDatabase', // Added foiaDatabase to the manually handled types
-  'foiaDocument', // Added foiaDocument to the manually handled types
-
+  'foiaDatabase',
+  'foiaDocument',
   'page',
 ])
 
@@ -160,38 +218,37 @@ export const structure = (S: StructureBuilder) =>
       S.divider(),
 
       S.listItem()
-        .title('Zing System')
+        .title('Posting System')
         .icon(SparklesIcon)
         .child(
           S.list()
-            .title('Zing System')
+            .title('Posting System')
             .items([
-              S.documentTypeListItem('zingThread').title('Zing Threads').icon(ThListIcon),
+              S.documentTypeListItem('postThread').title('Post Threads').icon(ThListIcon),
               S.divider(),
               S.listItem()
-                .title('Active Zings')
+                .title('Active Posts')
                 .icon(EyeOpenIcon)
-                .child(S.documentList().title('Active Zings').filter('_type == "zing" && status == "active"').apiVersion('v2024-10-28')),
+                .child(S.documentList().title('Active post').filter('_type == "post" && status == "active"').apiVersion('v2024-10-28')),
               S.divider(),
               S.listItem()
-                .title('Private Zings')
+                .title('Private Posts')
                 .icon(LockIcon)
-                .child(S.documentList().title('Private Zings').filter('_type == "zing" && status == "private"').apiVersion('v2024-10-28')),
+                .child(S.documentList().title('Private Posts').filter('_type == "post" && status == "private"').apiVersion('v2024-10-28')),
               S.divider(),
               S.listItem()
-                .title('Archived Zings')
+                .title('Archived Posts')
                 .icon(ArchiveIcon)
                 .child(
-                  S.documentList().title('Archived Zings').filter('_type == "zing" && status == "archived"').apiVersion('v2024-10-28')
+                  S.documentList().title('Archived Posts').filter('_type == "post" && status == "archived"').apiVersion('v2024-10-28')
                 ),
               S.divider(),
-              S.documentTypeListItem('zing').title('All Zings').icon(SparklesIcon),
+              S.documentTypeListItem('post').title('All Posts').icon(SparklesIcon),
               S.divider(),
             ])
         ),
       S.divider(),
 
-      // --- PRIVATE NOTEBOOK ---
       S.listItem()
         .title('Private Notebook')
         .icon(BookIcon)
@@ -199,7 +256,6 @@ export const structure = (S: StructureBuilder) =>
 
       S.divider(),
 
-      // --- PROJECT MANAGEMENT ---
       S.listItem()
         .title('Project Management')
         .icon(ProjectsIcon)
@@ -217,7 +273,6 @@ export const structure = (S: StructureBuilder) =>
         ),
       S.divider(),
 
-      // --- NEW: RESEARCH & TIMELINES ---
       S.listItem()
         .title('Research & Timelines')
         .icon(SearchIcon)
@@ -233,7 +288,6 @@ export const structure = (S: StructureBuilder) =>
         ),
       S.divider(),
 
-      // --- NEW: DOCUMENT DATABASE ---
       S.listItem()
         .title('Document Database')
         .icon(DocumentIcon)
@@ -252,7 +306,6 @@ export const structure = (S: StructureBuilder) =>
         ),
       S.divider(),
 
-      // --- KNOWLEDGE GRAPH ---
       S.listItem()
         .title('Knowledge Graph')
         .icon(UsersIcon)
@@ -280,10 +333,9 @@ export const structure = (S: StructureBuilder) =>
         ),
       S.divider(),
 
-      // --- MEDIA LIBRARY ---
       S.listItem()
         .title('Media Library')
-        .icon(PlayIcon) // Changed top-level icon to be more generic for media
+        .icon(PlayIcon)
         .child(
           S.list()
             .title('Media Library')
@@ -317,7 +369,6 @@ export const structure = (S: StructureBuilder) =>
                     .items([
                       S.documentTypeListItem('youtubeChannel').title('Youtube Channels'),
                       S.divider(),
-                      // --- PODCASTS SECTION ---
                       S.listItem()
                         .title('Podcasts')
                         .icon(PlayIcon)
@@ -346,7 +397,6 @@ export const structure = (S: StructureBuilder) =>
                       S.divider(),
                       S.documentTypeListItem('bookCover').title('Book Covers'),
                       S.divider(),
-                      // --- MAGAZINE SECTION ---
                       S.listItem()
                         .title('Magazines')
                         .icon(BookIcon)
@@ -370,7 +420,7 @@ export const structure = (S: StructureBuilder) =>
 
                       S.listItem()
                         .title('Newspapers')
-                        .icon(ClipboardIcon) // Using ClipboardIcon for newspapers
+                        .icon(ClipboardIcon)
                         .child(
                           S.list()
                             .title('Newspapers')
@@ -412,16 +462,13 @@ export const structure = (S: StructureBuilder) =>
         ),
       S.divider(),
 
-      // --- CORE PAGES ---
       S.documentTypeListItem('page').title('Pages').icon(DocumentIcon),
 
-      // --- Filter out all manually handled types from the root ---
       ...S.documentTypeListItems().filter(
         (listItem) => !MANUALLY_HANDLED_TYPES.has(listItem.getId() || '')
       ),
     ])
 
-// Your existing getDefaultDocumentNode function can remain as is.
 export const getDefaultDocumentNode = (S: StructureBuilder, {schemaType}: {schemaType: string}) => {
   return S.document().views([S.view.form()])
 }
