@@ -9,10 +9,12 @@ export default defineCliConfig({
     projectId,
     dataset,
   },
- mediaLibrary: {
+  mediaLibrary: {
     // set the path relative to the location of sanity.cli.ts.
     aspectsPath: 'aspects',
   },
   studioHost,
-  autoUpdates: true,
+  deployment: {
+    autoUpdates: true,
+  },
 })

@@ -222,6 +222,8 @@ export const structure = (S: StructureBuilder) =>
               S.divider(),
               S.documentTypeListItem('category').title('Categories'),
               S.divider(),
+              S.documentTypeListItem('articleSeries').title('Article Series'),
+              S.divider(),
             ])
         ),
       S.divider(),
