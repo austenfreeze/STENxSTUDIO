@@ -22,6 +22,10 @@ import {
   CalendarIcon,
   DocumentTextIcon,
   SearchIcon,
+  TargetIcon,
+  CheckmarkCircleIcon,
+  TargetIcon,
+  TaskIcon,
 } from '@sanity/icons'
 import type {StructureBuilder} from 'sanity/desk'
 
@@ -85,22 +89,24 @@ import {
 } from '../schemaTypes/documents/Site Maintainence/Blog/editorialSuite';
 import {page} from '../schemaTypes/documents/Site Maintainence/Pages/page';
 import {post} from '../schemaTypes/documents/Site Maintainence/Blog/post';
-import {goal} from '../schemaTypes/documents/Project/goal';
-import {sprint} from '../schemaTypes/documents/Project/sprint';
-import {completedTask} from '../schemaTypes/documents/Project/completedTask';
-import {category} from '../schemaTypes/documents/Site Maintainence/category';
-import {project} from '../schemaTypes/documents/Project/Project/project';
-import {researchDocument} from '../schemaTypes/documents/Project/Project/researchDocument';
-import {timeline} from '../schemaTypes/documents/Timelines/timeline';
-import {timelineEventNode} from '../schemaTypes/documents/Timelines/timelineEventNode';
-import {settings} from '../schemaTypes/singletons/settings';
-import {callToAction} from '../schemaTypes/objects/callToAction';
-import {infoSection} from '../schemaTypes/objects/infoSection';
-import {pullQuote} from '../schemaTypes/objects/pullQuote';
-import {researchCitation} from '../schemaTypes/objects/researchCitation';
-import {contextInput} from '../schemaTypes/objects/contextInput';
-import {richTextContent} from '../schemaTypes/objects/richTextContent';
-import {link} from '../schemaTypes/objects/link';
+import goal from '../schemaTypes/documents/Goals and Tasks Tracker/goal';
+import goalHub from '../schemaTypes/documents/Goals and Tasks Tracker/goalHub';
+import task from '../schemaTypes/documents/Goals and Tasks Tracker/task';
+import { sprint } from '../schemaTypes/documents/Project/sprint';
+import { completedTask } from '../schemaTypes/documents/Project/completedTask';
+import { category } from '../schemaTypes/documents/Site Maintainence/category';
+import { project } from '../schemaTypes/documents/Project/Project/project';
+import { researchDocument } from '../schemaTypes/documents/Project/Project/researchDocument';
+import { timeline } from '../schemaTypes/documents/Timelines/timeline';
+import { timelineEventNode } from '../schemaTypes/documents/Timelines/timelineEventNode';
+import { settings } from '../schemaTypes/singletons/settings';
+import { callToAction } from '../schemaTypes/objects/callToAction';
+import { infoSection } from '../schemaTypes/objects/infoSection';
+import { pullQuote } from '../schemaTypes/objects/pullQuote';
+import { researchCitation } from '../schemaTypes/objects/researchCitation';
+import { contextInput } from '../schemaTypes/objects/contextInput';
+import { richTextContent } from '../schemaTypes/objects/richTextContent';
+import { link } from '../schemaTypes/objects/link';
 
 
 const MANUALLY_HANDLED_TYPES = new Set([
@@ -119,6 +125,9 @@ const MANUALLY_HANDLED_TYPES = new Set([
   'notebookEntry',
   'project',
   'goal',
+  'goalHub',
+  'task',
+  'sprint',
   'completedTask',
   'admin',
   'person',
@@ -250,10 +259,32 @@ export const structure = (S: StructureBuilder) =>
       S.divider(),
 
       S.listItem()
-        .title('Private Notebook')
-        .icon(BookIcon)
-        .child(S.documentList().title('Notebook Entries').filter('_type == "notebookEntry"').apiVersion('v2024-10-28')),
-
+        .title('Goals & Tasks')
+        .icon(TargetIcon)
+        .child(
+          S.list()
+            .title('Goals & Tasks')
+            .items([
+              S.documentTypeListItem('goalHub').title('Goal Hubs').icon(TargetIcon),
+              S.divider(),
+              S.listItem()
+                .title('All Goals')
+                .icon(TargetIcon)
+                .child(S.documentList().title('All Goals').filter('_type == "goal"')),
+              S.divider(),
+              S.listItem()
+                .title('All Tasks')
+                .icon(TaskIcon)
+                .child(S.documentList().title('All Tasks').filter('_type == "task"')),
+              S.divider(),
+              S.listItem()
+                .title('Completed Tasks')
+                .icon(CheckmarkCircleIcon)
+                .child(S.documentList().title('Completed Tasks').filter('_type == "task" && status == "completed"')),
+              S.divider(),
+              S.documentTypeListItem('completedTask').title('Old Completed Tasks'),
+            ])
+        ),
       S.divider(),
 
       S.listItem()
@@ -265,10 +296,7 @@ export const structure = (S: StructureBuilder) =>
             .items([
               S.documentTypeListItem('project').title('Projects'),
               S.divider(),
-              S.documentTypeListItem('goal').title('Goals'),
-              S.divider(),
-              S.documentTypeListItem('completedTask').title('Completed Tasks'),
-              S.divider(),
+              S.documentTypeListItem('sprint').title('Sprints'),
             ])
         ),
       S.divider(),
