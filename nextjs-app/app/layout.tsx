@@ -32,7 +32,9 @@ export async function generateMetadata(): Promise<Metadata> {
   const ogImage = resolveOpenGraphImage(settings?.ogImage)
   let metadataBase: URL | undefined
   try {
-    metadataBase = settings?.ogImage?.metadataBase ? new URL(settings.ogImage.metadataBase) : undefined
+    metadataBase = settings?.ogImage?.metadataBase
+      ? new URL(settings.ogImage.metadataBase)
+      : undefined
   } catch {
     metadataBase = undefined
   }
@@ -59,24 +61,32 @@ export default async function RootLayout({
   const isDraftMode = draftModeData.isEnabled
 
   return (
-    // Updated HTML tag with custom background and text colors
-    <html lang="en" className={`${inter.variable} bg-obsidian-tomb-950 text-all-the-smoke-50`}>
+    // Added suppressHydrationWarning to prevent extension-injected mismatch errors
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${inter.variable} bg-obsidian-tomb-950 text-all-the-smoke-50`}
+    >
       <body>
         <AppProviders>
           <Suspense fallback={<div>Loading...</div>}>
             {isDraftMode && <LiveVisualEditing />}
           </Suspense>
 
-          <header className="border-b border-stormchaser-700 p-4"> {/* Updated border color */}
+          <header className="border-b border-stormchaser-700 p-4">
             <div className="container mx-auto">
-              <h1 className="text-xl font-bold text-golden-staff-500">My Sanity Project</h1> {/* Updated text color */}
+              <h1 className="text-xl font-bold text-golden-staff-500">
+                My Sanity Project
+              </h1>
             </div>
           </header>
 
-          <main className="min-h-screen container mx-auto p-4">{children}</main>
+          <main className="min-h-screen container mx-auto p-4">
+            {children}
+          </main>
 
-          <footer className="border-t border-stormchaser-700 p-4 mt-12"> {/* Updated border color */}
-            <div className="container mx-auto text-center text-aestroidz-dust-400"> {/* Updated text color */}
+          <footer className="border-t border-stormchaser-700 p-4 mt-12">
+            <div className="container mx-auto text-center text-aestroidz-dust-400">
               <p>&copy; 2025 My Project. All rights reserved.</p>
             </div>
           </footer>
