@@ -24,7 +24,6 @@ import {
   SearchIcon,
   TargetIcon,
   CheckmarkCircleIcon,
-  TargetIcon,
   TaskIcon,
 } from '@sanity/icons'
 import type {StructureBuilder} from 'sanity/desk'
