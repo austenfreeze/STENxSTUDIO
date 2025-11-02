@@ -36,9 +36,20 @@ export const person = defineType({
       fieldset: 'fullName',
     }),
     defineField({
+      name: 'professionalTitles',
+      title: 'Professional Titles',
+      type: 'array',
+      of: [{type: 'string'}],
+      description: 'List of professional titles (e.g., "Congresswoman", "Author").',
+      options: {
+        layout: 'tags',
+      },
+    }),
+    defineField({
       name: 'picture',
-      title: 'Picture',
+      title: 'Profile Picture',
       type: 'image',
+      description: 'Upload a primary image for this person.',
       fields: [
         defineField({
           name: 'alt',
@@ -60,7 +71,13 @@ export const person = defineType({
           imageDescriptionField: 'alt',
         },
       },
-      validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'mediaGalleryReference',
+      title: 'Related Media Gallery',
+      type: 'reference',
+      description: 'Select a media gallery to display on this person\'s page. The first image from this gallery can be used as a fallback if no profile picture is set.',
+      to: [{type: 'mediaGallery'}],
     }),
     defineField({
       name: 'slug',
@@ -72,38 +89,45 @@ export const person = defineType({
       },
       validation: (rule) => rule.required(),
     }),
-    // If you want categories for a person, ADD THIS FIELD:
-    // defineField({
-    //   name: 'categories',
-    //   title: 'Categories',
-    //   type: 'array',
-    //   of: [{type: 'reference', to: [{type: 'category'}]}],
-    // }),
     defineField({
       name: 'relatedContent',
       title: 'Related Content',
-      type: 'relatedContent'
+      type: 'array',
+      description: 'Select other documents to link to.',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'mediaGallery'}, {type: 'post'}],
+        },
+      ],
     }),
   ],
   preview: {
     select: {
       firstName: 'firstName',
       lastName: 'lastName',
+      professionalTitles: 'professionalTitles',
       media: 'picture',
-      // categories: 'categories[]->title', // REMOVED: This field does not exist in the schema.
+      mediaGalleryImage: 'mediaGalleryReference.images[0].image.asset', // Select the asset of the first image from the referenced gallery
+      mediaGalleryVideo: 'mediaGalleryReference.images[0].thumbnailImage.asset', // Select the thumbnail asset of the first video from the referenced gallery
     },
     prepare(selection) {
-      const {firstName, lastName, media} = selection // REMOVED 'categories' from destructuring
-      const title = `${firstName || ''} ${lastName || ''}`.trim()
+      const {firstName, lastName, professionalTitles, media, mediaGalleryImage, mediaGalleryVideo} = selection;
+      const title = `${firstName || ''} ${lastName || ''}`.trim();
+      
+      let subtitle = 'Person';
+      if (professionalTitles && professionalTitles.length > 0) {
+        subtitle = professionalTitles.join(', ');
+      }
 
-      // Subtitle now defaults to 'Person' or could be adjusted to something else if needed.
-      const subtitle = 'Person'; // Fixed: No longer trying to display non-existent categories.
+      // Prioritize the direct profile picture, then the image from the gallery, then the video thumbnail, and finally the default icon.
+      const mediaToDisplay = media || mediaGalleryImage || mediaGalleryVideo || UserIcon;
 
       return {
         title: title || 'Untitled Person',
         subtitle: subtitle,
-        media: media || UserIcon,
-      }
+        media: mediaToDisplay,
+      };
     },
   },
 })

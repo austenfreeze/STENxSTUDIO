@@ -47,9 +47,9 @@ export const mediaGallery = defineType({
       title: 'galleryTitle',
       description: 'description',
       // CORRECTED: Select the actual image/thumbnail asset directly from the first item
-      // This is a more robust way to get media for preview
-      mediaCustomImage: 'images[0].image', // For customImage type
-      mediaVideoContent: 'images[0].thumbnailImage', // For videoContent type
+      // This is the key change to make images show up.
+      mediaCustomImage: 'images[0].image.asset', // For customImage type
+      mediaVideoContent: 'images[0].thumbnailImage.asset', // For videoContent type
       imagesArray: 'images', // Keep this to get the total count
     },
     prepare({title, description, mediaCustomImage, mediaVideoContent, imagesArray}) {

@@ -21,14 +21,6 @@ export const customImage = defineType({
           type: 'string',
           description: 'A title for the image. This will be used as the alternative text (alt).',
         }),
-        // If you want a separate alt text field:
-        // defineField({
-        //   name: 'altText',
-        //   title: 'Alternative Text (Alt)',
-        //   type: 'string',
-        //   description: 'Important for SEO and accessibility.',
-        //   validation: (Rule) => Rule.required(),
-        // }),
       ],
     }),
     defineField({
@@ -41,11 +33,10 @@ export const customImage = defineType({
   preview: {
     select: {
       title: 'image.title',
-      // alt: 'image.alt', // Removed as 'alt' isn't directly a defined field here
       fileName: 'image.asset.originalFilename',
       media: 'image',
     },
-    prepare({title, fileName, media}) { // Removed 'alt' from prepare params
+    prepare({title, fileName, media}) {
       const formatFileName = (name) => {
         if (!name) return ''
         const noExtension = name.replace(/\.[^/.]+$/, '')
@@ -58,8 +49,8 @@ export const customImage = defineType({
 
       return {
         title: displayTitle,
-        // Subtitle now correctly references the 'title' field as the alt source.
-        subtitle: `Alt: ${displayTitle}`, // Corrected: Using displayTitle as the alt text indication
+        // The subtitle is now clearer about the alt text's source.
+        subtitle: `Alt: ${displayTitle}`,
         media: media,
       }
     },
